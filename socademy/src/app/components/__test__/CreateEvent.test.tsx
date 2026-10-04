@@ -77,3 +77,17 @@ test ("Lagre knappen er deaktivert når kategorien ikke er valgt", async() => {
 });
 
 // Test 8 Utendørs eller innendørs
+
+test("Utendøra eller innendørs", async () => {
+    render (<CreateEvent />);
+    const toggle = screen.getByRole("checkbox", { name: "Utendørs" });
+    await userEvent.click(toggle);
+    expect(toggle).toBeChecked();
+});
+
+// Test 9
+test ("Utendørs er av som standard", () => {
+    render (<CreateEvent />);
+    expect (screen.getByRole("checkbox", { name: "Utendørs" })).not.toBeChecked();
+});
+

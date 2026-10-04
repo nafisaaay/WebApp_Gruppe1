@@ -8,6 +8,7 @@ export function CreateEvent() {
     const [time, setTime] = useState("");
     const [location, setLocation] = useState("");
     const [category, setCategory] = useState("");
+    const [isOutdoor, setIsOutdoor] = useState(false);
 
     return (
         <form>
@@ -66,7 +67,14 @@ export function CreateEvent() {
                 <option value="other">Annet</option>        
             </select>
 
-    
+            <label htmlFor="isOutdoor">Utendørs</label>
+            <input
+                id="isOutdoor"
+                type="checkbox"
+                checked={isOutdoor}
+                onChange={(e) => setIsOutdoor(e.target.checked)}
+            />
+
         
             <button 
                 type="submit" 
