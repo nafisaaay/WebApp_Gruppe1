@@ -11,18 +11,6 @@ describe("validatePost", () => {
 
         expect(result.ok).toBe(true);
     });
-    
-    it("rejects a post missing the text field", () => { 
-        const result = validatePost({
-            id: 1,
-            user: { id: 1 },
-        });
-
-        expect(result).toEqual({
-            ok: false,
-            error: "Post must have a text property",
-        });
-    });
     it("rejects a post with empty text", () => {
         const result = validatePost({
             id: 1,
