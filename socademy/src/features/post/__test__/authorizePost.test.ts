@@ -5,9 +5,9 @@ import { canCreatePost, canDeletePost } from "../authorization/authorizePost";
 describe("canDeletePost", () => {
   it("rejects a user who deletes a post that's not theirs", () => {
     const result = canDeletePost(
-      { user: { id: 1 } },
+      { user: { id: "1" } },
       "delete",
-    { id: 1, userId: 2 }
+    { id: "1", userId: "2" }
     );
 
     expect(result).toEqual({
@@ -18,9 +18,9 @@ describe("canDeletePost", () => {
 
   it("allows a user to delete their own post", () => {
     const result = canDeletePost(
-      { user: { id: 1 } },
+      { user: { id: "1" } },
       "delete",
-      { id: 1, userId: 1 }
+      { id: "1", userId: "1" }
     );
 
     expect(result).toEqual({ ok: true });
@@ -30,7 +30,7 @@ describe("canDeletePost", () => {
   const result = canDeletePost(
     null,  
     "delete",
-    { id: 1, userId: 1 }
+    { id: "1", userId: "1" }
                        
   );
   expect(result).toEqual({
@@ -55,7 +55,7 @@ describe("canCreatePost", () => {
     });
     it("allows a logged-in user to create a post", () => {
         const result = canCreatePost(
-        { user: { id: 1 } },
+        { user: { id: "1" } },
         "create",
         { text: "Example post" }
         );
@@ -63,9 +63,9 @@ describe("canCreatePost", () => {
     });
     it("rejects a logged-in user to create a post on someone else's behalf", () => {
         const result = canCreatePost(
-        { user: { id: 1 } },
+        { user: { id: "1" } },
         "create",
-        { text: "Example post", userId: 2 }
+        { text: "Example post", userId: "2" }
         );
         expect(result).toEqual({
         ok: false,

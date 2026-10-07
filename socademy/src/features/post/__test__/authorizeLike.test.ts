@@ -6,7 +6,7 @@ describe("canLikePost", () => {
     const result = canLikePost(
       null,
       "like",
-      { id: 1, userId: 1, likedBy: [] }
+      { id: "1", userId: "1", likedBy: [] }
     );
 
     expect(result).toEqual({
@@ -16,9 +16,9 @@ describe("canLikePost", () => {
   });
   it("rejects a user who likes posts twice", () => {
     const result = canLikePost(
-      { user: { id: 1 } },
+      { user: { id: "1" } },
       "like",
-      { id: 1, userId: 1, likedBy: [1] }
+      { id: "1", userId: "1", likedBy: ["1"] }
     );
 
     expect(result).toEqual({
@@ -28,9 +28,9 @@ describe("canLikePost", () => {
   });
   it("allows a logged-in user to like a post they haven't liked yet", () => {
     const result = canLikePost(
-      { user: { id: 2 } },
+      { user: { id: "2" } },
       "like",
-      { id: 1, userId: 1, likedBy: [1] }
+      { id: "1", userId: "1", likedBy: ["1"] }
     );
 
     expect(result).toEqual({ ok: true });

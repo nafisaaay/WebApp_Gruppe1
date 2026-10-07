@@ -4,18 +4,18 @@ import { validatePost } from "../validation/validatePost";
 describe("validatePost", () => {
     it("accepts a valid post with text and a user", () => {
         const result = validatePost({
-            id: 1,
+            id: "1",
             text: "post example",
-            user: { id: 1 },
+            user: { id: "1" },
         });
 
         expect(result.ok).toBe(true);
     });
     it("rejects a post with empty text", () => {
         const result = validatePost({
-            id: 1,
+            id: "1",
             text: "",
-            user: { id: 1 },
+            user: { id: "1" },
         });
 
         expect(result.ok).toBe(false);
@@ -23,9 +23,9 @@ describe("validatePost", () => {
     it("rejects a post that has more than 500 characters in the text field", () => {
         const longText = "a".repeat(501);
         const result = validatePost({
-            id: 1,
+            id: "1",
             text: longText,
-            user: { id: 1 },
+            user: { id: "1" },
         });
 
         expect(result).toEqual({

@@ -1,9 +1,9 @@
 type AuthResult = { ok: true } | { ok: false; error: string };
 
 export function canDeletePost(
-  user: { user: { id: number } } | null,
+  user: { user: { id: string } } | null,
   action: "delete",
-  targetPost: { id: number; userId: number } | null
+  targetPost: { id: string; userId: string } | null
 ): AuthResult {
   if (!user || !user.user) {
     return { ok: false, error: "User must be logged in to delete a post" };
@@ -21,9 +21,9 @@ export function canDeletePost(
 }
 
 export function canCreatePost(
-  user: { user: { id: number } } | null,
+  user: { user: { id: string } } | null,
   action: "create",
-  targetPost?: { text: string; userId?: number }
+  targetPost?: { text: string; userId?: string }
 ): AuthResult {
   if (!user || !user.user) {
     return { ok: false, error: "User must be logged in to create a post" };

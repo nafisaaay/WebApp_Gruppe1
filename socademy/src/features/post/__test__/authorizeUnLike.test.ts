@@ -4,9 +4,9 @@ import { canUnlikePost } from "../authorization/authorizeUnlike";
 describe("canUnlikePost", () => {
     it("accepts a valid user who is logged in", () => {
         const result = canUnlikePost(
-            { user: { id: 1 } },
+            { user: { id: "1" } },
             "unlike",
-            { id: 1, userId: 1, likedBy: [1] }
+            { id: "1", userId: "1", likedBy: ["1"] }
         );
         expect(result).toEqual({ ok: true });
     });
@@ -15,7 +15,7 @@ describe("canUnlikePost", () => {
         const result = canUnlikePost(
             null,
             "unlike",
-            { id: 1, userId: 1, likedBy: [] }
+            { id: "1", userId: "1", likedBy: [] }
         );
         expect(result).toEqual({
             ok: false,
@@ -24,7 +24,7 @@ describe("canUnlikePost", () => {
     });
     it("reject when no target post is provided", () => {
         const result = canUnlikePost(
-            { user: { id: 1 } },
+            { user: { id: "1" } },
             "unlike",
             null
         );
@@ -35,9 +35,9 @@ describe("canUnlikePost", () => {
     });
     it("rejects a user who has not liked the post yet", () => {
         const result = canUnlikePost(
-            { user: { id: 1 } },
+            { user: { id: "1" } },
             "unlike",
-            { id: 1, userId: 1, likedBy: [] }
+            { id: "1", userId: "1", likedBy: [] }
         );
         expect(result).toEqual({
             ok: false,

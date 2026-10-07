@@ -1,6 +1,6 @@
 type AuthResult = { ok: true } | { ok: false; error: string };
 
-export function validateComment(comment: { id: number; text?: string , user: { id: number } | null }): AuthResult {
+export function validateComment(comment: { id: string; text?: string , user: { id: string } | null }): AuthResult {
   if (comment.text === undefined) {
     return { ok: false, error: "Comment must have a text property" };
   }

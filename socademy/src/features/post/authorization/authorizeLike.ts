@@ -1,9 +1,9 @@
 type AuthResult = { ok: true } | { ok: false; error: string };
 
 export function canLikePost(
-  user: { user: { id: number } } | null,
+  user: { user: { id: string } } | null,
   action: "like",
-  targetPost: { id: number; userId: number; likedBy: number[] } | null
+  targetPost: { id: string; userId: string; likedBy: string[] } | null
 ): AuthResult {
   if (!user || !user.user) {
     return { ok: false, error: "User must be logged in to like a post" };
