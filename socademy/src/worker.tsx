@@ -5,7 +5,6 @@ import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/home";
 
-
 export type AppContext = {};
 
 export default defineApp([
