@@ -1,3 +1,5 @@
+import styles from "./styles.css?url";
+
 export const Document: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => (
@@ -5,7 +7,7 @@ export const Document: React.FC<{ children: React.ReactNode }> = ({
     <head>
       <meta charSet="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>@redwoodjs/starter-minimal</title>
+      <title>SocAdemy</title>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link
         rel="preconnect"
@@ -18,6 +20,7 @@ export const Document: React.FC<{ children: React.ReactNode }> = ({
         precedence="first"
       />
       <link rel="modulepreload" href="/src/client.tsx" />
+      <link rel="stylesheet" href={styles} />
     </head>
     <body>
       {children}
