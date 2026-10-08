@@ -21,9 +21,14 @@
     "check": "npm run generate && npm run types",
     "types": "tsc",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate:dev": "wrangler d1 migrations apply DB --local",
+    "db:migrate:prod": "wrangler d1 migrations apply DB --remote"
   },
   "dependencies": {
+    "dotenv": "^18.0.5",
+    "drizzle-orm": "1.0.0-rc.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-server-dom-webpack": "19.2.8",
@@ -40,8 +45,10 @@
     "@types/node": "~26.1.2",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
+    "drizzle-kit": "1.0.0-rc.4",
     "happy-dom": "^20.14.5",
     "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
     "typescript": "7.0.2",
     "vite": "~8.2.0",
     "vitest": "^5.0.1",
