@@ -11,8 +11,12 @@ export type Event = {
 export function UpcomingEvents( { events } : { events: Event [] }) {
     const today = new Date().toISOString().slice(0,10)  // bruker slice kun for datoen så den kan sammenlignes med event.date
 
-
-    const upcomingEvents = events.filter((event) => event.date >= today); // Filtrerer ut hendelser som er i fremtiden
+    const upcomingEvents = events
+        .filter((event) => event.date >= today) // Filtrerer ut hendelser som er i fremtiden
+        .sort((a, b) => a.date.localeCompare(b.date)) // Sorterer hendelser etter dato
+        .slice(0, 3); // Viser kun de tre nærmeste hendelsene 
+    
+    
         
     if (upcomingEvents.length === 0) {
         return <p>Ingen kommende hendelser</p>;

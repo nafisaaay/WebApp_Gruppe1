@@ -47,3 +47,39 @@ test("Skjuler hendelser som har vært der", () => {
     expect(screen.getByText("Ny quiz")).toBeInTheDocument(); 
     
 });
+
+// Test 4
+
+test("Viser nærmeste hendelser først", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-10T12:00:00"));
+
+    render (<UpcomingEvents events={[
+        makeEvent({ id: "volleyball", title: "Volleyballturnering", date: "2026-11-04"}), // langt fra,
+        makeEvent({ id: "quiz", title: "Quiz i kantina", date: "2026-10-13"}), // snart
+
+         ]} />);
+
+         const items = screen.getAllByRole("listitem");
+         expect(items[0]).toHaveTextContent("Quiz i kantina");
+});
+        
+
+// Test 5
+test("Viser maks tre hendelser", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-10-10T12:00:00"));
+
+    render (<UpcomingEvents events={[
+        makeEvent({ id: "event1", title: "Hendelse 1", date: "2026-10-11"}),
+        makeEvent({ id: "event2", title: "Hendelse 2", date: "2026-10-12"}),
+        makeEvent({ id: "event3", title: "Hendelse 3", date: "2026-10-13"}),
+        makeEvent({ id: "event4", title: "Hendelse 4", date: "2026-10-14"}), // Skal ikke vises
+    ]} />);
+    
+    expect(screen.getAllByRole("listitem")).toHaveLength(3);
+
+});
+        
+        
+        
