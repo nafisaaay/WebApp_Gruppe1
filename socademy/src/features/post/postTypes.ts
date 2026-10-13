@@ -5,8 +5,10 @@ export type PostInput = z.infer<typeof postSchema>;
 
 export interface Post{
     id: string;
+    title: string;
     text: string;
     user: {
         id: string;
+        name: string;
     }; 
 }

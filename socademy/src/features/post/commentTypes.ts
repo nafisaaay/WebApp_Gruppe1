@@ -9,6 +9,7 @@ export interface Comment {
     text: string;
     user: {
         id: string;
+        name: string;
     };
     postId: Post["id"];
 }

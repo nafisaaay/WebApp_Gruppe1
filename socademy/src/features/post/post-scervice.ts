@@ -1,8 +1,8 @@
-import { Post } from "./postTypes";
+import { Post, PostInput } from "./postTypes";
 
 export interface PostService{
-    getPosts: () => Promise<Post[]>;  
-    createPost: (userId: string, input: { text: string }) => Promise<Post>;
-    updatePost: (postId: string, userId: string, input: { text: string }) => Promise<Post>;
-    removePost: (postId: string, userId: string) => Promise<void>;
+    get: () => Promise<]>;  
+    create (userId: string, userName: string, input: nput) => Promise<;
+    update (d: string, userId: string, input: nput) => Promise<;
+    remove (d: string, userId: string) => Promise<void>;
 }
