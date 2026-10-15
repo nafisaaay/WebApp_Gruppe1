@@ -1,4 +1,3 @@
-
 export interface BaseController<T, TInput>{
    getAll:(userId?:string)=> Promise<T[]>
    create:(input: TInput, userId: string)=> Promise<T>;
