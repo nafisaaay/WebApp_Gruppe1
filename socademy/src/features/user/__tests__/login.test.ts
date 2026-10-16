@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { validateEmail, SCHOOL_DOMAIN, validatePassword } from "../login";
+import { validateEmail, SCHOOL_DOMAIN, validatePassword } from "../validation/validateLogin";
 
 /* E-post-validering:
 1. Tom epost og epost med bare mellomrom/tab.

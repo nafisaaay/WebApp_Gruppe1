@@ -17,21 +17,19 @@ export function validateEmail(email: string): ValidationResult {
     if (!email.toLowerCase().endsWith(`@${SCHOOL_DOMAIN}`)){
         return {ok: false, error: `E-posten må være en ${SCHOOL_DOMAIN} adresse.`}
     }
-
     return {ok: true};
 }
 
 
-export function validatePassword(pswrd: string): ValidationResult {
-    if (typeof pswrd !== "string" || pswrd.trim() === "") { // denne avviser alt som ikke er tekst, tom tekst, \n\t (tomme etter .trim)
+export function validatePassword(password: string): ValidationResult {
+    if (typeof password !== "string" || password.trim() === "") { // denne avviser alt som ikke er tekst, tom tekst, \n\t (tomme etter .trim)
         return {ok: false, error: "Passord er påkrevd."};
     }
-    if (pswrd.length < PSWRD_MIN) {
+    if (password.length < PSWRD_MIN) {
         return {ok: false, error: `Passord må være minst ${PSWRD_MIN} tegn.`};
     }
-    if (pswrd.length > PSWRD_MAX) {
+    if (password.length > PSWRD_MAX) {
         return {ok: false, error: `Passord kan ikke være lengre enn ${PSWRD_MAX} tegn.`};
     }
-
     return {ok: true};
 }
