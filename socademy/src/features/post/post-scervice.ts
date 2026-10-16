@@ -1,8 +1,6 @@
 import { Post, PostInput } from "./postTypes";
+import { BaseService } from "../base-service";
 
-export interface PostService{
-    get: () => Promise<]>;  
-    create (userId: string, userName: string, input: nput) => Promise<;
-    update (d: string, userId: string, input: nput) => Promise<;
-    remove (d: string, userId: string) => Promise<void>;
+export interface PostService extends BaseService<Post, PostInput>{
+  
 }

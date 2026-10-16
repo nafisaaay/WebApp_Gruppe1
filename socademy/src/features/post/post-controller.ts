@@ -1,8 +1,6 @@
-
 import { BaseController } from "../base-controller";
+import { PostInput, Post } from "./postTypes";
 
-
-export interface PostController extends BaseController{
-
+export interface PostController extends BaseController<Post, PostInput>{
 
 }
