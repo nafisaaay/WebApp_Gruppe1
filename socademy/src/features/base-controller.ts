@@ -1,8 +1,8 @@
-export interface BaseController<T, TInput>{
-   getAll:(userId?:string)=> Promise<T[]>
-   create:(input: TInput, userId: string)=> Promise<T>;
-   get:(id: string, userId?: string)=> Promise<T>;
-   update?:( id: string, input: TInput, userId: string)=>Promise<T>;
-   delete:(id: string, userId: string)=>Promise<T>;
-
+import type { RequestInfo } from "rwsdk/worker";
+export interface BaseController{
+   create(requestInfo : RequestInfo): Promise<Response>;
+   get(requestInfo : RequestInfo): Promise<Response>;
+   getAll(requestInfo : RequestInfo): Promise<Response>;
+   remove(requestInfo : RequestInfo): Promise<Response>;
+   update(requestInfo : RequestInfo): Promise<Response>;
 }
