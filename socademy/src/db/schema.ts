@@ -18,6 +18,7 @@ export const events = sqliteTable("events", {
 export const posts = sqliteTable("posts", {
     id: int().primaryKey({ autoIncrement: true}),
     text: text().notNull(),
+    title: text().notNull(),
     userId: text().notNull(),
     userName: text().notNull(),
     createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
