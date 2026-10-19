@@ -12,3 +12,7 @@ export const events = sqliteTable("events", {
     createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 })
 
+
+export type Event = typeof events.$inferInsert;
+export type CreateEvent = typeof events.$inferInsert;
+
