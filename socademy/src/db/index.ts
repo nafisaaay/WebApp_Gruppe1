@@ -5,7 +5,7 @@ import * as schema from "./schema"
 import { relations } from "./relations";
 
 
-export const db = drizzle(env.DB);
+export const db = drizzle(env.DB, { relations });
 
 export { schema, relations};
 
