@@ -27,8 +27,8 @@
 			"binding": "DB",
 			"database_name": "socademy_d1",
 			"database_id": "0b602c91-931f-4a84-ae11-a26dab1f3788",
-      "migrations_dir": "drizzle",
-      "migrations_pattern": "drizzle/*/migration.sql"
+      		"migrations_dir": "drizzle",
+      		"migrations_pattern": "drizzle/*/migration.sql"
 		}
 	]
 }

@@ -1,0 +1,35 @@
+import type { BaseRepository } from "../base-repository";
+import { DB } from "@/db";
+import type { USER } from "./loginTypes";
+import { user } from "../db/schema"; //fordi det er i min egen mappe. må endres senere.
+import { eq } from "drizzle-orm";
+import { Errors } from "../results";
+
+export interface UserRepository extends BaseRepository<USER, never, never>{}
+
+export function createUserRepository(_db : DB): UserRepository{
+    return {
+        get: async (id) => {
+            try {
+                const [row] = await _db
+                    .select({ id: user.id, email: user.email })
+                    .from(user)
+                    .where(eq(user.id, id))
+                    .limit(1);
+                return { ok: true, data: row ?? null };
+            } catch {
+                return { ok: false, error: { ...Errors.server, message: "Kunne ikke hente bruker." }};  
+            }
+        },
+
+        getAll: async() => ({ ok: false, error: Errors.notSupported }),
+        create: async() => ({ ok: false, error: Errors.notSupported }),
+        remove: async() => ({ ok: false, error: Errors.notSupported }),
+    };
+} 
+
+
+/*
+Controller leser forespørselen og kaller service, som validerer med loginSchema. 
+Repository er klart til bruk når man trenger å hente en bruker fra databasen.
+*/

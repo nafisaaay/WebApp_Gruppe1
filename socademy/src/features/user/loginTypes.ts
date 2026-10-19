@@ -7,3 +7,13 @@ export interface LOGIN {
     email: string;
     password: string;
 }
+
+export interface USER {
+    id: string;
+    email: string;
+}
+
+export interface LOGINRESULT {
+    user: USER;
+    headers?: Headers;
+}

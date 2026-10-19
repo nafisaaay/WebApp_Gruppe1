@@ -3,8 +3,8 @@ export type ValidationResult = {ok: true} | {ok: false; error: string};
 export const SCHOOL_DOMAIN = "hiof.no";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; //[^\s@]+ betyr hver gang det samme: ett eller flere tegn som ikke er mellomrom og ikke @.
 
-const PSWRD_MIN = 8;
-const PSWRD_MAX = 128;
+export const PSWRD_MIN = 8;
+export const PSWRD_MAX = 128;
 
 
 export function validateEmail(email: string): ValidationResult {
