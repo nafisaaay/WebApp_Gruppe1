@@ -2,8 +2,7 @@ import { desc, eq, or, like } from "drizzle-orm";
 import { posts, type CreatePost, type UpdatePost, type Post } from "@/db/schema";
 import type { BaseRepository } from "../base-repository";
 import { db, type DB } from "@/db";
-import { PostListParams } from "./utils/validate-post-params";
-import { Params } from "./utils/parse-params";
+import { LIST_LIMIT_MAX, PostListParams } from "./utils/validate-post-params";
 
 export interface PostRepository extends BaseRepository<Post, CreatePost, UpdatePost, PostListParams> {}
 
@@ -25,6 +24,7 @@ export function createPostRepository(db: DB): PostRepository {
           .from(posts)
           .where(search ? or(like(posts.title, search), like(posts.text, search)) : undefined)
           .orderBy(desc(posts.createdAt))
+          .limit(params.limit ?? LIST_LIMIT_MAX)
           .all();
         return { ok: true, data: rows };
       } catch (error) {
@@ -74,6 +74,22 @@ export function createPostRepository(db: DB): PostRepository {
         return dbError(error);
       }
     },
-  };
+    async update(id, data){
+      try{
+      const updatePost = await db
+      .update(posts)
+      .set(data)
+      .where(eq(posts.id, Number(id)))
+      .returning()
+      .get();
+      return({ok:true, data: updatePost})
+      }
+      catch(error){
+        return dbError(error)
+      }
+
+    
+  }
+}
 }
 export const postRepository = createPostRepository(db);

@@ -1,4 +1,3 @@
-import { POST, PostInput } from "./postTypes";
 import { BaseService } from "../base-service";
 import { postRepository, type PostRepository } from "./post-repository";
 import type { Params } from "./utils/parse-params"
