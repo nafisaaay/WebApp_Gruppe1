@@ -1,7 +1,8 @@
 import { env } from "cloudflare:workers";
 import { APIError, betterAuth } from 'better-auth';
-import { drizzleAdapter } from ''
-import { db, schema } from '@/db';
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import { db } from '@/db';
+import { account, session, user, verification } from "@/db/auth-schema";
 import { SCHOOL_DOMAIN, PSWRD_MIN, PSWRD_MAX  } from "../user/validation/validateLogin";
 
 
@@ -9,8 +10,8 @@ if (!env.BETTER_AUTH_SECRET) {
   throw new Error("BETTER_AUTH_SECRET er ikke satt (.dev.vars lokalt, secret i prod).");
 }
 
-export const loginAuth = betterAuth ({
-    database: drizzleAdapter(db. {
+export const auth = betterAuth ({
+    database: drizzleAdapter(db, {
         provider: "sqlite",
         schema: {
             user: schema.user, 
@@ -29,6 +30,16 @@ export const loginAuth = betterAuth ({
         autoSignIn: true, // = man blir logget inn rett ett registrering - passer dette her egentlig?
         minPasswordLength: PSWRD_MIN,
         maxPasswordLength: PSWRD_MAX,
+    },
+    
+    user: { // for bruk av roller og admin.
+        additionalFields: {
+            role: {
+                type: "string",
+                defaultValue: "user",
+                input: false,
+            },
+        },
     },
 
     databaseHooks: {
@@ -70,4 +81,4 @@ export const loginAuth = betterAuth ({
     },
 });
 
-export type AuthSession = typeof loginAuth.$Infer.Session;
+export type AuthSession = typeof auth.$Infer.Session;

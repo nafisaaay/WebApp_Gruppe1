@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useTransition } from "react";
 import { loginSchema } from "../utils/loginSchema";
 
@@ -8,7 +10,7 @@ export function LoginForm() {
     const [isPending, startTransition] = useTransition();
 
 
-    function onSubmit(e: React.FormEvent) {
+    function onSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     setError(null);
 
@@ -39,7 +41,7 @@ export function LoginForm() {
     return (
         <form onSubmit={onSubmit}>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail..." required/>
-            <input type="password" value={{password}} onChange={(e) => setPassword(e.target.value)} placeholder="Passord..." required/>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Passord..." required/>
             <button type="submit" disabled={isPending}>{isPending ? "Logger inn..." : "Logg inn"}</button>
             {error && <p role="alert">{error}</p>}
         </form>

@@ -1,6 +1,6 @@
 //LEKSJON 12
 import { ErrorResponse, requestInfo } from "rwsdk/worker";
-import type { Session } from "@/middleware/session";
+import type { Session } from "./session";
 
 // 401 - Vet ikke hvem du er.
 export function requireUser(): Session {

@@ -6,7 +6,7 @@ import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/home";
 import { userController } from "./features/user/user-controller";
 import { Errors } from "./features/results";
-import { loginAuth } from "./features/auth/loginAuth";
+import { auth } from "./features/auth/auth";
 import { sessionMiddleware  } from "./features/user/middleware/session";
 
 export type AppContext = {};
@@ -17,7 +17,7 @@ export default defineApp([
     info.request.method === "POST" ? userController.create(info)
     : Response.json({ error: Errors.notSupported }, { status: Errors.notSupported.code })
     ),
-    route("/api/auth/*", ({ request }) => loginAuth.handler(request)),
+    route("/api/auth/*", ({ request }) => auth.handler(request)),
     route("/api/users/me", (info) =>
       info.request.method === "GET"
           ? userController.get(info)

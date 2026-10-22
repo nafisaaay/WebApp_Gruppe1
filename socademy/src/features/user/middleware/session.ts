@@ -1,5 +1,5 @@
 import type { RequestInfo } from "rwsdk/worker";
-import { loginAuth } from "@/features/auth/loginAuth";
+import { auth } from "@/features/auth/auth";
 
 // Type Session: Beskriver hva appen vet om brukeren. 
 // Er man ikke logget inn, er alt null OG isAuthenticated er false.
@@ -23,7 +23,7 @@ declare module "rwsdk/worker" {
 export async function sessionMiddleware({ request, ctx }: RequestInfo) {
     // Leser cookien fra forespørselen og spør Better-Auth om cookien hører til en gyldig innlogging.
     // Svar er enten { session, user } eller null
-  const result = await loginAuth.api.getSession({ headers: request.headers });
+  const result = await auth.api.getSession({ headers: request.headers });
   // hvis bruker er logget inn, fylles ctx.sessionen med info. Hvis ikke, null-verdier.
   ctx.session = result?.user
     ? {

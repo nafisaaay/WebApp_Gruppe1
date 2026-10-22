@@ -1,7 +1,7 @@
 import type { BaseRepository } from "../base-repository";
-import { DB } from "@/db";
+import { db, type DB } from "@/db";
 import type { USER } from "./loginTypes";
-import { user } from "../db/schema"; //fordi det er i min egen mappe. må endres senere.
+import { user } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { Errors } from "../results";
 

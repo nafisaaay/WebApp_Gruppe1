@@ -1,19 +1,18 @@
 import { db } from '@/db';
 import { z } from 'zod';
-import { loginAuth } from "../auth/loginAuth";
+import { auth } from "../auth/auth";
 import type { BaseService } from "../base-service";
 import { Errors } from "../results";
-import type { LoginInput, LOGINRESULT } from "./loginTypes";
+import type { USER } from "./loginTypes";
 import { loginSchema } from "./utils/loginSchema";
 import { createUserRepository } from './user-repository';
-import { requestToResourceInput } from 'better-auth';
-
 
 const userRepository = createUserRepository(db);
 
-export interface UserService extends BaseService<LOGINRESULT, LoginInput>{}
+export interface UserService extends BaseService<USER, never>{}
 
 export const userService: UserService = {
+    /*
     create: async (input) => {
         const parsed = loginSchema.safeParse(input);
         if(!parsed.success){
@@ -36,6 +35,7 @@ export const userService: UserService = {
             return {ok: false, error: {...Errors.unauthorized, message: "Feil e-post eller passord."}}
         }
     },
+    */
 
     get: async (id, userId) => {
         if(!userId) return { ok: false, error: Errors.unauthorized };
@@ -45,10 +45,10 @@ export const userService: UserService = {
         if(!res.ok) return res;
         if(!res.data) return {ok: false, error: Errors.notFound };
 
-        return { ok: true, data: { user: res.data }};
+        return { ok: true, data: res.data};
     },
 
-
+    create: async () => ({ ok: false, error: Errors.notSupported }),
     getAll: async () => ({ ok: false, error: Errors.notSupported }),
     remove: async () => ({ ok: false, error: Errors.notSupported })       
 }

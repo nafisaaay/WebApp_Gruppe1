@@ -6,6 +6,9 @@ import { Errors } from "../results";
 export interface UserController extends BaseController {}
 
 export const userController: UserController = {
+    async create() { return Response.json({ error: Errors.notSupported}, {status: Errors.notSupported.code }) },
+
+    /*
     async create(requestInfo) {
         let input: LoginInput;
         try {
@@ -20,6 +23,7 @@ export const userController: UserController = {
         }
         return Response.json({ data: result.data.user }, { status: 200, headers: result.data.headers });
     },
+    */
 
     async get(requestInfo) { 
         const { userId } = requestInfo.ctx.session;
@@ -29,10 +33,9 @@ export const userController: UserController = {
         }
 
         const result = await userService.get(userId, userId);
-        if(!result.ok) {
-            return Response.json({ error: result.error }, {status: result.error.code});
-        }
-        return Response.json({ data: result.data.user }, { status: 200 });
+        return result.ok
+            ? Response.json(result, { status: 200})
+            : Response.json(result, { status: result.error.code });
     },
     
     
