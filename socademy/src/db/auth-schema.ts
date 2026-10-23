@@ -8,19 +8,21 @@ import { sql } from "drizzle-orm";
 
 // -------------- USERS -----------------
 export const user = sqliteTable("users", {
-    id: int("id").primaryKey({ autoIncrement: true }),
+    id: text("id").primaryKey(),
     name: text("name").notNull(),
     email: text("email").notNull().unique(),
     emailVerified: int("email_verified", { mode: "boolean"})
         .default(false)
         .notNull(),
-    Image: text("image"),
+    image: text("image"),
     role: text({ enum: ["admin", "user"]})
-        .notNull(),
-    createdAt: int("created_at", { mode: "timestamp" })
+        .notNull().default("user"),
+    createdAt: int("created_at", { mode: "timestamp_ms" })
         .notNull()
         .$defaultFn(() => new Date()),
-    UpdatedAt: int("updated_at", { mode: "timestamp" })
+    updatedAt: int("updated_at", { mode: "timestamp_ms" })
+        .notNull()
+        .$default(() => new Date())
         .$onUpdateFn(() => new Date()),
 });
 

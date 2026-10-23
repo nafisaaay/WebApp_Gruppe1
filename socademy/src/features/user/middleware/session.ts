@@ -8,6 +8,7 @@ export type Session = {
   name: string | null;
   username: string | null;
   email: string | null;
+  role: string | null;
   isAuthenticated: boolean;
 };
 
@@ -31,7 +32,8 @@ export async function sessionMiddleware({ request, ctx }: RequestInfo) {
         name: result.user.name,
         username: result.user.email.split("@")[0],
         email: result.user.email,
+        role: result.user.role ?? "user",
         isAuthenticated: true,
       }
-    : { userId: null, name: null, username: null, email: null, isAuthenticated: false };
+    : { userId: null, name: null, username: null, email: null, role: null, isAuthenticated: false };
 }

@@ -1,4 +1,3 @@
-"use server";
 
 // Interface for logg-inn skjemaet
 export interface LoginInput {

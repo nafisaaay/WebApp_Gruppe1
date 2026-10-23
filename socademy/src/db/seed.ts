@@ -1,25 +1,20 @@
-//Kode er lagt inn som kode i package.sjon
+//Kode er lagt inn som kode i package.json
 //Kjøre seeding: pnpm db:seed
 //NB! filplassering 
 
 import { defineScript } from "rwsdk/worker";
-import { drizzle } from "drizzle-orm/d1";
-import { user } from './schema';
+import { auth } from "@/features/auth/auth";
 
-export default defineScript(async ({ env }) => {
-  const db = drizzle(env.DB);
+export default defineScript(async () => {
+  
+  try {
+    await auth.api.signUpEmail({
+      body: { name: "Test Bruker", email: "test@hiof.no", password: "passord123" },
+    });
+    console.log("🌱 Testbruker opprettet: test@hiof.no / passord123");
+  } catch (e) {
+    console.log("Brukeren finnes allerede: ", e);
+  }
+  return Response.json({ ok: true });
 
-  // Insert a user
-  await db.insert(user).values({
-    name: "Test user",
-    email: "test@testuser.io",
-    role: "student"
-  });
-
-  // Verify the insert by selecting all users
-  const result = await db.select().from(user).all();
-
-  console.log("🌱 Finished seeding");
-
-  return Response.json(result);
 });

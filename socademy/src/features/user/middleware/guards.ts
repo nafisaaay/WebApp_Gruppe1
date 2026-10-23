@@ -21,8 +21,8 @@ export function requireOwner(ownerId: string): Session {
 }
 
 // 403 på rolle — krever at admin-pluginen er slått på.
-export function requireRole(role: string) {
-  const session = requireUser() as Session & { role?: string };
+export function requireRole(role: string): Session {
+  const session = requireUser();
   if (session.role !== role) throw new ErrorResponse(403, `Krever rollen «${role}»`);
   return session;
 }

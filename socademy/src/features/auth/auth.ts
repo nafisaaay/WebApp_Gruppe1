@@ -7,17 +7,17 @@ import { SCHOOL_DOMAIN, PSWRD_MIN, PSWRD_MAX  } from "../user/validation/validat
 
 
 if (!env.BETTER_AUTH_SECRET) {
-  throw new Error("BETTER_AUTH_SECRET er ikke satt (.dev.vars lokalt, secret i prod).");
+    throw new Error("BETTER_AUTH_SECRET er ikke satt (.dev.vars lokalt, secret i prod).");
 }
 
 export const auth = betterAuth ({
     database: drizzleAdapter(db, {
         provider: "sqlite",
         schema: {
-            user: schema.user, 
-            session: schema.session,
-            account: schema.account,
-            verification: schema.verification,
+            user,
+            session,
+            account,
+            verification
         },
     }),
 
@@ -77,7 +77,9 @@ export const auth = betterAuth ({
                 attributes: { httpOnly: true, secure: true, sameSite: "lax" },
             },
         },
-        generateId: () => crypto.randomUUID(),
+        database: {
+            generateId: () => crypto.randomUUID(),
+        },
     },
 });
 
