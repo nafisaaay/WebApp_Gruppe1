@@ -6,5 +6,4 @@ export interface BaseService<T, TInput>{
     getAll:(userId?:string)=>Promise<Result<T[]>>
     update?:( id: string, input: TInput, userId: string)=> Promise<Result<T>>
     remove :(id: string, userId: string)=>Promise<EmptyResult>
-
 }
