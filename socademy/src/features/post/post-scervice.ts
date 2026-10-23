@@ -5,7 +5,7 @@ import { validatePostParams } from "./utils/validate-post-params";
 import { PostDTO, toPostDTO } from "./post-mapper";
 import { postSchema, updatePostSchema } from "./utils/post-schema";
 import { z } from "zod";
-
+import * as validateModule from "./utils/validate-post-params";
 
 export interface PostService extends BaseService<PostDTO, Params>{
   
@@ -16,6 +16,7 @@ export function createPostService(_repository : PostRepository): PostService{
 
     return{
         async getAll(params = {}){
+            console.log("validate-post-params eksporterer:", Object.keys(validateModule));
             const paramsValidateResult = validatePostParams(params);
             if(!paramsValidateResult.ok){
                 return{

@@ -11,7 +11,7 @@ export type PostDTO = {
 }
 
 export function toPostDTO(post : Post) : PostDTO{
-    let { id, title, text, userId, userName, createdAt, updatedAt } = post;
+    const { id, title, text, userId, userName, createdAt, updatedAt } = post;
     return{
         id,
         title,
@@ -19,6 +19,6 @@ export function toPostDTO(post : Post) : PostDTO{
         userId,
         userName,
         createdAt: createdAt.toISOString(),
-        updatedAt: createdAt.toISOString()
+        updatedAt: updatedAt.toISOString(),
     }
 }
