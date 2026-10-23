@@ -18,7 +18,8 @@ export async function PostList() {
       <h1>Alle innlegg</h1>
       <ul>
         {result.data.map((post) => (
-          <li key={post.id}>{post.title}</li>
+          <li key={post.id}>
+            <h2>{post.title}</h2><p>{post.text}</p></li>
         ))}
       </ul>
     </main>

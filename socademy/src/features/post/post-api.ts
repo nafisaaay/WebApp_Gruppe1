@@ -13,7 +13,7 @@ type PostResult =
         error: AppError};
 
 type RemovePostResult =
-  | { ok: true; data: { id: string } }
+  | { ok: true; data: { id: number } }
   | { ok: false; error: AppError };
 
 
@@ -68,11 +68,11 @@ export async function createPost(data:{
 
 
 export async function updatePost(
-  id: string,
+  id: number,
   data: { text?: string; title?: string },
 ): Promise<PostResult> {
   try {
-    const response = await fetch(`/api/v1/posts/${encodeURIComponent(id)}`, {
+    const response = await fetch(`/api/v1/posts/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -93,9 +93,9 @@ export async function updatePost(
   }
 }
 
-export async function getPost(id: string): Promise<PostResult> {
+export async function getPost(id: number): Promise<PostResult> {
   try {
-    const response = await fetch(`/api/v1/posts/${encodeURIComponent(id)}`);
+    const response = await fetch(`/api/v1/posts/${id}`);
     return (await response.json()) as PostResult;
   } catch (error) {
     console.error(error);
@@ -111,9 +111,9 @@ export async function getPost(id: string): Promise<PostResult> {
 }
 
 
-export async function removePost(id:string): Promise<RemovePostResult>{
+export async function removePost(id:number): Promise<RemovePostResult>{
     try{
-         const response = await fetch(`/api/v1/posts/${encodeURIComponent(id)}`, {
+         const response = await fetch(`/api/v1/posts/${id}`, {
             method: "DELETE",
          })
          console.log(response.ok, response.status, response.statusText);

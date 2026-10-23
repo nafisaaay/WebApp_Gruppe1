@@ -4,10 +4,20 @@ import { RequestInfo } from "rwsdk/worker";
 import { parseParams } from "./utils/parse-params";
 import { demoDelay, demoFailure } from "@/lib/demo-chaos";
 
-export interface PostController extends BaseController{
-    
+export interface PostController extends BaseController {}
+const parseId = (value: string | undefined): number | null => {
+  const id = Number(value);
+  return Number.isInteger(id) && id > 0 ? id : null;
+};
 
-}
+const invalidIdResponse = () =>
+  Response.json(
+    {
+      ok: false,
+      error: { code: 400, message: "invalid id", fieldErrors: {} },
+    },
+    { status: 400 },
+  );
 
 export function createPostController (_service : PostService): PostController{
     return {
@@ -63,7 +73,9 @@ export function createPostController (_service : PostService): PostController{
        
     },
    async get({params}: RequestInfo){ 
-    const result = await _service.get(params.id);
+    const id = parseId(params.id);
+    if (id === null) return invalidIdResponse();
+    const result = await _service.get(id);
     return result.ok
     ? Response.json(result, {
         status: 200
@@ -72,32 +84,20 @@ export function createPostController (_service : PostService): PostController{
         status: Number(result.error.code),
     }) 
    },
-   async remove({ request, params, ctx} : RequestInfo) {
-        await demoDelay(request, 1000);
-        const chaos = demoFailure(request);
-        if(chaos){
-            return Response.json(
-                {
-                    ok:false, 
-                    error: chaos
-                },
-                {
-                    status: 500
-                }
-            );
-        }
-        const TEMP_USER_ID = "1";
-        const result = await _service.remove(params.id,TEMP_USER_ID)
+   async remove({ params }: RequestInfo) {
+    const id = parseId(params.id);
+    if (id === null) return invalidIdResponse();
+    const TEMP_USER_ID = "1";
+    const result = await _service.remove(id, TEMP_USER_ID);
 
-        return result.ok ? new Response(null, {
-            status: 204
-        })
-        : Response.json(result, {
-            status: Number(result.error.code)
-        })
-    },
+    return result.ok
+     ? new Response(null, { status: 204 })
+    : Response.json(result, { status: Number(result.error.code) });
+},
 
     async update({request, params}: RequestInfo) {
+        const id = parseId(params.id);
+        if (id === null) return invalidIdResponse();
         let body: unknown;
         try{
             body = await request.json();
@@ -116,7 +116,7 @@ export function createPostController (_service : PostService): PostController{
         })
         };
         const TEMP_USER_ID = "1";
-        const result = await _service.update(params.id, body,TEMP_USER_ID)
+        const result = await _service.update(id, body,TEMP_USER_ID)
 
         return result.ok 
         ? Response.json(result, {

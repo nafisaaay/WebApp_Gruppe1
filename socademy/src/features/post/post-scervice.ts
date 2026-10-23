@@ -12,7 +12,7 @@ export interface PostService extends BaseService<PostDTO, Params>{
 }
 
 export function createPostService(_repository : PostRepository): PostService{
-    const getPost = (id:string) => _repository.get(id);
+    const getPost = (id:number) => _repository.get(id);
 
     return{
         async getAll(params = {}){
@@ -79,7 +79,7 @@ export function createPostService(_repository : PostRepository): PostService{
                 data: toPostDTO(result.data),
             }
         },
-        async remove(id, userId){
+        async remove(id){
             const postExists = await getPost(id);
             if(!postExists.ok) return postExists;
             if(!postExists.data){
@@ -92,7 +92,7 @@ export function createPostService(_repository : PostRepository): PostService{
                     }
                 }
             }
-            const result = await _repository.remove(id, userId);
+            const result = await _repository.remove(id);
             if(!result.ok) return result;
 
             return{

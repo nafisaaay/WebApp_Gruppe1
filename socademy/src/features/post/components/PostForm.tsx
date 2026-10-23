@@ -71,7 +71,7 @@ export function PostForm() {
       {fieldErrors.text ? <p>{fieldErrors.text[0]}</p> : null}
 
       <button type="submit" disabled={isLoading}>
-        {isLoading ? "Lagrer..." : "Publiser innlegg"}
+        {isLoading ? "Lagrer..." : "Publiser innlegg"} trykk her
       </button>
 
       {status === "error" ? <p role="alert">{error}</p> : null}
