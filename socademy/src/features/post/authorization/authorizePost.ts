@@ -3,7 +3,7 @@ type AuthResult = { ok: true } | { ok: false; error: string };
 export function canDeletePost(
   user: { user: { id: string } } | null,
   action: "delete",
-  targetPost: { id: string; userId: string } | null
+  targetPost: { id: number; userId: string } | null
 ): AuthResult {
   if (!user || !user.user) {
     return { ok: false, error: "User must be logged in to delete a post" };

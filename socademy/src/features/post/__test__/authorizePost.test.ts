@@ -7,7 +7,7 @@ describe("canDeletePost", () => {
     const result = canDeletePost(
       { user: { id: "1" } },
       "delete",
-    { id: "1", userId: "2" }
+    { id: 1, userId: "2" }
     );
 
     expect(result).toEqual({
@@ -20,7 +20,7 @@ describe("canDeletePost", () => {
     const result = canDeletePost(
       { user: { id: "1" } },
       "delete",
-      { id: "1", userId: "1" }
+      { id: 1, userId: "1" }
     );
 
     expect(result).toEqual({ ok: true });
@@ -30,7 +30,7 @@ describe("canDeletePost", () => {
   const result = canDeletePost(
     null,  
     "delete",
-    { id: "1", userId: "1" }
+    { id: 1, userId: "1" }
                        
   );
   expect(result).toEqual({

@@ -1,7 +1,7 @@
 type AuthResult = { ok: true } | { ok: false; error: string };
 
  
-export function validatePost(post: { text: string, title: string; }): AuthResult {
+export function validatePost(post: {id: number, text: string, title: string; }): AuthResult {
   if (post.text === undefined) {
     return { ok: false, error: "Post must have a text property" };
   }
