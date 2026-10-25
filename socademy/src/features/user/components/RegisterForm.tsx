@@ -22,19 +22,26 @@ export function RegisterForm() {
         const passwordCheck = validatePassword(password);
         if (!passwordCheck.ok) return setError(passwordCheck.error);
 
-        setIsPending(true);
-        const { error: signUpError } = await authClient.signUp.email({
-            name: name.trim(),
-            email: email.trim(),
-            password,
-        });
-        setIsPending(false);
+        try {
+            
+            setIsPending(true);
+            const { error: signUpError } = await authClient.signUp.email({
+                name: name.trim(),
+                email: email.trim(),
+                password,
+            });
         
-        if (signUpError) {
-            setError(signUpError.message ?? "Kunne ikke registrere bruker.");
-            return;
-        }
-        window.location.href = "/";
+            if (signUpError) {
+                setIsPending(false);
+                setError(signUpError.message ?? "Kunne ikke registrere bruker.");
+                return;
+            }
+            window.location.href = "/";
+
+        } catch {
+            setIsPending(false);
+            setError("Fikk ikke kontakt med serveren. Sjekk nettet og prøv igjen.");
+        } 
     }
 
     return (

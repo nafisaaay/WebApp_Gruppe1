@@ -21,29 +21,32 @@ export function LoginForm() {
       return;
     }
 
-    startTransition(async () => {
-      // sender epost og pass til server. startTrans gjør at isPending blir true mens den venter, så knappen kan vise "logger inn...".
-      const res = await fetch("/api/auth/sign-in/email", { //OBS!! LEGG inn path til din controller
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
-      });
-      //generell feilmelding ved feilet innlogging.  Hvis den lyktes har betterauth satt cookien og bruker sendes til forsiden.
-      if (!res.ok) {
-        // Generisk melding: avslør aldri om det var e-posten eller passordet.
-        setError("Ugyldig e-post eller passord");
-        return;
-      }
-      window.location.href = "/";
-      });
-    }
-
-    return (
-        <form onSubmit={onSubmit}>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail..." required/>
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Passord..." required/>
-            <button type="submit" disabled={isPending}>{isPending ? "Logger inn..." : "Logg inn"}</button>
-            {error && <p role="alert">{error}</p>}
-        </form>
-    );
+      startTransition(async () => {
+        try {
+          // sender epost og pass til server. startTrans gjør at isPending blir true mens den venter, så knappen kan vise "logger inn...".
+          const res = await fetch("/api/auth/sign-in/email", { //OBS!! LEGG inn path til din controller
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(parsed.data),
+          });
+          //generell feilmelding ved feilet innlogging.  Hvis den lyktes har betterauth satt cookien og bruker sendes til forsiden.
+          if (!res.ok) {
+            // Generisk melding: avslør aldri om det var e-posten eller passordet.
+            setError("Ugyldig e-post eller passord");
+            return;
+          }
+          window.location.href = "/";
+        } catch {
+          setError("Fikk ikke kontakt med serveren. Sjekk nettet og prøv igjen.");
+        }
+    });
+  }
+  return (
+      <form onSubmit={onSubmit}>
+          <input type="email" name="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail..." required/>
+          <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Passord..." required/>
+          <button type="submit" disabled={isPending}>{isPending ? "Logger inn..." : "Logg inn"}</button>
+          {error && <p role="alert">{error}</p>}
+      </form>
+  );
 }
