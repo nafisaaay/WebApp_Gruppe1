@@ -1,36 +1,18 @@
-import type { BaseController } from "../base-controller";
-import type { LoginInput } from "./loginTypes";
+import { fail, type BaseController } from "../base-controller";
 import { userService } from "./user-service";
 import { Errors } from "../results";
 
 export interface UserController extends BaseController {}
 
 export const userController: UserController = {
-    async create() { return Response.json({ error: Errors.notSupported}, {status: Errors.notSupported.code }) },
 
-    /*
-    async create(requestInfo) {
-        let input: LoginInput;
-        try {
-            input = await requestInfo.request.json();
-        } catch {
-            return Response.json({ error: Errors.badRequest}, {status: Errors.badRequest.code });
-        }
-        const result = await userService.create(input, "");
-        
-        if(!result.ok) {
-            return Response.json({ error: result.error }, {status: result.error.code });
-        }
-        return Response.json({ data: result.data.user }, { status: 200, headers: result.data.headers });
-    },
-    */
+    async create() { return fail(Errors.notSupported); },
 
+    // GET /api/users/me: henter innlogget bruker
     async get(requestInfo) { 
         const { userId } = requestInfo.ctx.session;
 
-        if (!userId) {
-            return Response.json({ error: Errors.unauthorized }, {status: Errors.unauthorized.code })
-        }
+        if (!userId) return fail(Errors.unauthorized);
 
         const result = await userService.get(userId, userId);
         return result.ok
@@ -39,12 +21,14 @@ export const userController: UserController = {
     },
     
     
-    async getAll() { return Response.json({ error: Errors.notSupported}, {status: Errors.notSupported.code }) },
-    async update() { return Response.json({ error: Errors.notSupported}, {status: Errors.notSupported.code }) },
-    async remove() { return Response.json({ error: Errors.notSupported}, {status: Errors.notSupported.code }) },
+    async getAll() { return fail(Errors.notSupported);},
+    async update() { return fail(Errors.notSupported);},
+    async remove() { return fail(Errors.notSupported);},
 }; 
 
 /*
-Controller leser forespørselen og kaller service, som validerer med loginSchema. 
-Repository er klart til bruk når man trenger å hente en bruker fra databasen.
+Controller leser forespørselen og kaller service. 
+Service sjekker tilgang (401/403/404). 
+Repository er det eneste laget som snakker med databasen.
+Registrering og innlogging håndteres av Better Auth på /api/auth/*.
 */
