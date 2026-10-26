@@ -21,6 +21,13 @@ export const requireAdminRoute: RouteMiddleware = ({ ctx }) => {
   if (ctx.session.role !== "admin") return fail(Errors.forbidden);
 };
 
+// 302: ikke logget inn -> /login
+export const requireUserPage: RouteMiddleware = ({ ctx }) => {
+  if (!ctx.session.isAuthenticated) {
+    return new Response(null, { status: 302, headers: { location: "/login" } });
+  }
+;}
+
 
 // ============ Sjekker inni controller/service ============
 // Kalles inne i koden når sjekken trenger data som ikke finnes før

@@ -9,7 +9,7 @@ import { auth } from "./features/auth/auth";
 import { sessionMiddleware  } from "./features/user/middleware/session";
 import { Login } from "./app/pages/login";
 import { Register } from "./app/pages/register";
-import { requireUserRoute } from "./features/user/middleware/guards";
+import { requireUserPage, requireUserRoute } from "./features/user/middleware/guards";
 
 export type AppContext = {};
 
@@ -24,7 +24,7 @@ export default defineApp([
     }),
 
     render(Document, [
-        route("/", Home),
+        route("/", [requireUserPage, Home]),
         route("/login", Login),
         route("/register", Register),
     ]),
