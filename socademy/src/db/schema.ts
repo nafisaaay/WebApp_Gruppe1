@@ -94,3 +94,36 @@ $defaultFn(): Setter default verdi når rad opprettes
 $onUpdateFn(): Oppdaterer verdi automatisk ved endringer
 $inferSelect/$inferInsert: Genererer TypeScript types
  */
+// -------- Innlegg -----------
+
+
+export const posts = sqliteTable("posts", {
+    id: int().primaryKey({ autoIncrement: true}),
+    text: text().notNull(),
+    title: text().notNull(),
+    userId: text().notNull(),
+    userName: text().notNull(),
+    createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+    updatedAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+})
+
+// -------- Kommentarer -----------
+export const comments = sqliteTable("comments", {
+    id: int().primaryKey({ autoIncrement: true}),
+    text: text().notNull(),
+    userId: text().notNull(),
+    userName: text().notNull(),
+    postId: int().notNull(),
+    createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+    updatedAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
+})
+
+export type Post = typeof posts.$inferSelect;
+export type CreatePost = typeof posts.$inferInsert;
+export type UpdatePost = Partial<CreatePost>
+
+export type Comment = typeof comments.$inferSelect;
+export type CreateComment = typeof comments.$inferInsert;
+
+
+
