@@ -1,6 +1,6 @@
 import { Calendar } from "@/app/components/calendar/Calendar";
 import { Header } from "@/app/components/layout/Header";
-import { SettingsSidebar } from "@/app/components/layout/SettingsSidebar";
+import { Sidebar } from "@/app/components/layout/Sidebar";
 import { RequestInfo } from "rwsdk/worker";
 import { parseYearMonth } from "@/app/components/calendar/calendarUtils";
 
@@ -19,7 +19,7 @@ export function Home({ request }: RequestInfo) {
     <Header />
     {/* 4 kolonner: sidepanel (1) | kalender (2) |  */}
     <div className="grid grid-cols-4 gap-4">
-      <SettingsSidebar />
+      <Sidebar />
       <main className="col-span-2">
         <Calendar year={year} month={month} />
       </main>
