@@ -1,4 +1,4 @@
-import { BaseService } from "../base-service";
+import type { BaseService } from "../base-service";
 import { postRepository, type PostRepository } from "./post-repository";
 import type { Params } from "./utils/parse-params"
 import { validatePostParams } from "./utils/validate-post-params";
@@ -7,7 +7,7 @@ import { postSchema, updatePostSchema } from "./utils/post-schema";
 import { z } from "zod";
 import * as validateModule from "./utils/validate-post-params";
 
-export interface PostService extends BaseService<PostDTO, Params>{
+export interface PostService extends BaseService<PostDTO, Params, number>{
   
 }
 
