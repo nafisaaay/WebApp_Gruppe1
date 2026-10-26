@@ -9,6 +9,7 @@ import { auth } from "./features/auth/auth";
 import { sessionMiddleware  } from "./features/user/middleware/session";
 import { Login } from "./app/pages/login";
 import { Register } from "./app/pages/register";
+import { requireUserRoute } from "./features/user/middleware/guards";
 
 export type AppContext = {};
 
@@ -19,7 +20,7 @@ export default defineApp([
     // ---- Auth / user ----
     route("/api/auth/*", ({ request }) => auth.handler(request)),
     route("/api/users/me", {
-        get: userController.get,
+        get: [requireUserRoute, userController.get],
     }),
 
     render(Document, [
