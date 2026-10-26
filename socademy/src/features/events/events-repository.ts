@@ -1,70 +1,89 @@
 import { eq } from "drizzle-orm";
 import { db, type DB } from "@/db";
-import {events, type Event } from "@/db/schema";
+import { events, type Event, type CreateEvent } from "@/db/schema";
+
+
 import type { BaseRepository } from "../base-repository";
-import type { CreateEventInput } from "./events-validation";
 
-import type { Result } from "../results";
+export interface EventRepository
+  extends BaseRepository<Event, CreateEvent, Partial<CreateEvent>> { }
 
-
-
-export interface EventRepository extends BaseRepository<Event, CreateEventInput> {}
-  // create: (event: CreateEvent) => Promise<
-  //   | {
-  //       ok: true;
-  //       data: Event;
-  //     }
-  //   | {
-  //       ok: false;
-  //       error: {
-  //         code: number;
-  //         message: string;
-  //         fieldErrors?: Record<string, string[]>;
-  //       };
-  //     }
-  // >;
-  update: (id: string, event: any) => Promise<any>;
-  get: (id: string) => Promise<any>;
-  list: () => Promise<any>;
-  remove: (id: string) => Promise<any>;
-}
 
 export function createEventRepository(_db: DB): EventRepository {
   return {
+    // Hente alle
+    async getAll() {
+      try {
+        const all = await _db.select().from(events);
+        return { ok: true, data: all };
+      } catch (error) {
+        console.error(error);
+        return { ok: false, error: { code: 500, message: "Kunne ikke hente alle events" } };
+      }
+    },
+
+
+    // Lag ny
     async create(data) {
       try {
-        const createEvent = await _db
+        const created = await _db
           .insert(events)
           .values(data)
           .returning()
           .get();
-
-        return {
-          ok: true,
-          data: createEvent,
-        };
+        return { ok: true, data: created };
       } catch (error) {
         console.error(error);
-        return {
-          ok: false,
-          error: {
-            code: 500,
-            message: "Noe gikk galt med koden",
-            fieldErrors: {},
-          },
-        };
+        return { ok: false, error: { code: 500, message: "Kunne ikke opprette event" } };
       }
-    }, // implement thi,
-    list: () => {
-      // her skriver jeg ren sql
     },
-    get: (id) => {
-      // her bruker prisma
+
+    // Hent én
+    async get(id) {
+      try {
+        const found = await _db
+          .select()
+          .from(events)
+          .where(eq(events.id, Number(id)))
+          .get();
+        return { ok: true, data: found ?? null };
+      } catch (error) {
+        console.error(error);
+        return { ok: false, error: { code: 500, message: "Kunne ikke hente event" } };
+      }
+    },
+
+    // Endre
+    async update(id, data, _userId) {
+      try {
+        const updated = await _db
+          .update(events)
+          .set(data)
+          .where(eq(events.id, Number(id)))
+          .returning()
+          .get();
+        return { ok: true, data: updated ?? null };
+      } catch (error) {
+        console.error(error);
+        return { ok: false, error: { code: 500, message: "Kunne ikke oppdatere event" } };
+      }
+    },
+
+    // Slett
+    async remove(id, _userId) {
+      try {
+        await _db
+          .delete(events)
+          .where(eq(events.id, Number(id)));
+        return { ok: true };
+      } catch (error) {
+        console.error(error);
+        return { ok: false, error: { code: 500, message: "Kunne ikke slette event" } };
+      }
     },
   };
 }
 
-//
+
 export const eventRepository = createEventRepository(db);
 
-// repository.create({ title: "My Task", description: "This is my task" });
