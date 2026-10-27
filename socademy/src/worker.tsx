@@ -1,21 +1,41 @@
 import { render, route } from "rwsdk/router";
 import { defineApp } from "rwsdk/worker";
-
+import { postRoutes } from "./features/post/post-routes";
 import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/home";
+import { ForumPage } from "./features/pages/ForumPage";
+import { userController } from "./features/user/user-controller";
+import { auth } from "./features/auth/auth";
+import { sessionMiddleware  } from "./features/user/middleware/session";
+import { Login } from "./app/pages/login";
+import { Register } from "./app/pages/register";
+import { requireUserPage, requireUserRoute } from "./features/user/middleware/guards";
 
 export type AppContext = {};
 
 export default defineApp([
-  setCommonHeaders(),
-  ({ ctx }) => {
-    // setup ctx here
-    ctx;
-  },
-  render(Document, 
-    [
-      route("/", Home),
-    ]),
+    // Middleware: kjøres for ALLE forespørsler, i denne rekkefølgen.
+    setCommonHeaders(),
+    sessionMiddleware,  // finner ut hvem som er logget inn -> ctx.session
 
+    // ---- Auth / user ----
+    route("/api/auth/*", ({ request }) => auth.handler(request)),
+    route("/api/users/me", {
+        get: [requireUserRoute, userController.get],
+    }),
+
+    // ---- Innlegg -----
+    ...postRoutes,
+
+    // ---- Status -----
+    route("/api/status", () => Response.json({ status: "ok", version: "0.1.0" })),
+
+    // ---- Sider ----
+    render(Document, [
+        route("/", [requireUserPage, Home]),
+        route("/forum", [requireUserPage, ForumPage]),
+        route("/login", Login),
+        route("/register", Register),
+    ]),
 ]);

@@ -1,0 +1,13 @@
+import { z } from "zod";
+
+export const commentSchema = z.object({
+  text: z.string().min(1, "Comment text cannot be empty").max(100, "Comment text must not exceed 100 characters"),
+  user: z.object({
+    id: z.number,
+    name: z.string().min(1, "User name cannot be empty"),
+  }),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+});
+
+export type CreatePostInput = z.infer<typeof commentSchema>;
