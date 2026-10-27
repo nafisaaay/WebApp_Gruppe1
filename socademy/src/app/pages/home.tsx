@@ -1,8 +1,8 @@
-import { Calendar } from "@/app/components/calendar/Calendar";
-import { Header } from "@/app/components/layout/Header";
-import { Sidebar } from "@/app/components/layout/Sidebar";
+import { Calendar } from "@/features/calendar/Calendar";
+import { Header } from "@/app/components/Header";
+import { Sidebar } from "@/app/components/Sidebar";
 import type { RequestInfo } from "rwsdk/worker";
-import { parseYearMonth } from "@/app/components/calendar/calendarUtils";
+import { parseYearMonth } from "@/features/calendar/calendarUtils";
 
 
 // Forsiden. Innlogget bruker kommer fra AppLayout (UserProvider), så klientkomponenter

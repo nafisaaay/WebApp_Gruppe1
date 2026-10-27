@@ -7,10 +7,10 @@ import { Home } from "@/app/pages/home";
 import { ForumPage } from "./app/pages/ForumPage";
 import { userController } from "./features/user/user-controller";
 import { auth } from "./features/auth/auth";
-import { sessionMiddleware  } from "./features/user/middleware/session";
+import { sessionMiddleware  } from "./features/auth/middleware/session";
 import { Login } from "./app/pages/login";
 import { Register } from "./app/pages/register";
-import { requireUserPage, requireUserRoute } from "./features/user/middleware/guards";
+import { requireUserPage, requireUserRoute } from "./features/auth/middleware/guards";
 import { AppLayout } from "./app/components/layout/AppLayout";
 
 export type AppContext = {};

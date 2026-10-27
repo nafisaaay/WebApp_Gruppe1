@@ -1,6 +1,6 @@
 import type { BaseRepository } from "../../shared/base-repository";
 import type { DB } from "@/db";
-import type { USER } from "./loginTypes";
+import type { USER } from "./login-types";
 import { User, user } from "@/db/schema/schema";
 import { eq } from "drizzle-orm";
 import { Errors } from "../../shared/results";

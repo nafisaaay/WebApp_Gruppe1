@@ -1,30 +1,11 @@
 import { int, text, sqliteTable, index } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
+import { user } from "./schema";
+
 // Tabellene Better Auth trenger: user, session, account, verification.
 // Generert med Better Auth sin CLI (npx auth generate) og ryddet litt.
 // IKKE endre kolonnenavnene her uten å vite hva du gjør: Better Auth forventer dem.
 // Egne felter på brukeren legges til her OG i `user.additionalFields` i auth.ts.
-
-
-// -------------- USERS -----------------
-export const user = sqliteTable("users", {
-    id: text("id").primaryKey(),
-    name: text("name").notNull(),
-    email: text("email").notNull().unique(),
-    emailVerified: int("email_verified", { mode: "boolean"})
-        .default(false)
-        .notNull(),
-    image: text("image"),
-    role: text({ enum: ["admin", "user"]})
-        .notNull().default("user"),
-    createdAt: int("created_at", { mode: "timestamp_ms" })
-        .notNull()
-        .$defaultFn(() => new Date()),
-    updatedAt: int("updated_at", { mode: "timestamp_ms" })
-        .notNull()
-        .$default(() => new Date())
-        .$onUpdateFn(() => new Date()),
-});
 
 // -------------- SESSION -----------------
 export const session = sqliteTable(

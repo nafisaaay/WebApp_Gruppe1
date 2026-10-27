@@ -1,4 +1,4 @@
-import { getMonthGrid, toDateKey } from "@/app/components/calendar/calendarUtils";
+import { getMonthGrid, toDateKey } from "./calendarUtils";
 
 // short vises i tabellen, long vises som tooltip og leses opp av skjermlesere
 // Universell utforming you know

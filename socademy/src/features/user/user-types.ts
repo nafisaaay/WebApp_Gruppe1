@@ -1,6 +1,6 @@
 
 import type { User } from "@/db/schema/auth-schema";
-import type { Session } from "@/features/user/middleware/session";
+import type { Session } from "@/features/auth/middleware/session";
 
 // Det klienten får vite om innlogget bruker.
 // Tar KUN med det komponentene trenger, fordi alt her kan leses i nettleseren!
