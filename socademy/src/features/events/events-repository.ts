@@ -6,7 +6,7 @@ import { events, type Event, type CreateEvent } from "@/db/schema";
 import type { BaseRepository } from "../base-repository";
 
 export interface EventRepository
-  extends BaseRepository<Event, CreateEvent, Partial<CreateEvent>> { }
+  extends BaseRepository<Event, CreateEvent, Partial<CreateEvent>, undefined> {}
 
 
 export function createEventRepository(_db: DB): EventRepository {

@@ -4,7 +4,7 @@ import type { Event } from "@/db/schema";
 import { eventSchema, type CreateEventInput } from "./events-validation";
 import { eventRepository } from "./events-repository";
 
-export const eventsService: BaseService<Event, CreateEventInput> = {
+export const eventsService: BaseService<Event, undefined, number> = {
   create: async (input, userId) => {
     const parsed = eventSchema.safeParse(input);
     if (!parsed.success) {
@@ -17,12 +17,11 @@ export const eventsService: BaseService<Event, CreateEventInput> = {
         }
       };
     }
-    return await eventRepository.create(parsed.data);
+    return await eventRepository.create({ ...parsed.data, createdBy: userId });
   },
 
   get: async (id, userId) => {
     const result = await eventRepository.get(id);
-
     if (!result.ok) return result;
 
     if (!result.data) {
@@ -45,6 +44,7 @@ export const eventsService: BaseService<Event, CreateEventInput> = {
   remove: async (id, userId) => {
     const result = await eventRepository.get(id);
     if (!result.ok) return result;
+
     if (!result.data) {
       return {
         ok: false,
@@ -53,7 +53,20 @@ export const eventsService: BaseService<Event, CreateEventInput> = {
           message: "Event finnes ikke"
         }
       };
+    } 
+
+  
+      if (result.data.createdBy !== userId) {                 
+      return {
+        ok: false,
+        error: {
+          code: 403,
+          message: "Du kan bare slette egne events",
+        },
+      };
     }
-    return await eventRepository.remove(id, userId);
+
+    return await eventRepository.remove(id, userId);        
   },
 };
+

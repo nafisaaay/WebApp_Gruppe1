@@ -1,13 +1,19 @@
 import type { BaseController } from "../base-controller";
 import { eventsService } from "./events-service";
-import type { CreateEventInput } from "./events-validation";
 
 export const eventsController: BaseController = {
 // Opprette et event
   create: async (requestInfo) => {
+    const userId = requestInfo.ctx.session.userId;
     const input = await requestInfo.request.json();
 
-    const result = await eventsService.create(input as CreateEventInput, "");
+  if (!userId) {
+  return Response.json(
+    { ok: false, error: { code: 401, message: "Du må være innlogget" } },
+    { status: 401 },
+  );
+}
+const result = await eventsService.create(input, userId);
     return Response.json(result, {
       status: result.ok ? 201 : result.error.code,
     });
@@ -15,7 +21,7 @@ export const eventsController: BaseController = {
 
   // Hente kun en event
   get: async (requestInfo) => {
-    const id  = requestInfo.params.id;
+    const id  = Number(requestInfo.params.id);
     const result = await eventsService.get(id, "");
 
     return Response.json(result, {
@@ -35,8 +41,15 @@ export const eventsController: BaseController = {
 
 // Slette et event
   remove: async (requestInfo) => {
-    const id  = requestInfo.params.id;
-    const result = await eventsService.remove(id, "");
+    const userId = requestInfo.ctx.session.userId;
+    if (!userId) {
+      return Response.json (
+        { ok: false, error: { code: 401, message: "Du må være innlogget"}},
+        { status: 401 },
+      );
+    }
+    const id  = Number(requestInfo.params.id);
+    const result = await eventsService.remove(id, userId);
     return Response.json(result, {
       status: result.ok ? 200 : result.error.code,
     });

@@ -1,0 +1,1 @@
+ALTER TABLE `events` ADD `created_by` text NOT NULL REFERENCES users(id) ON DELETE CASCADE;
