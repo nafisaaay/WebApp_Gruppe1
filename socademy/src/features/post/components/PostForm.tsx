@@ -1,5 +1,5 @@
 "use client";
-import { useState, type SubmitEvent, type ChangeEvent } from "react";
+import { useState, type ChangeEvent, type SubmitEvent } from "react";
 import { createPost } from "../post-api";
 import type { CreatePostInput } from "../utils/post-schema";
 
@@ -14,6 +14,13 @@ export function PostForm() {
   const [error, setError] = useState<null | string>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
+  // Event-delen
+  const [isEvent, setIsEvent] = useState(false);
+  const [startsAt, setStartsAt] = useState("");
+  const [location, setLocation] = useState("");
+
+
+
   const onSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus("loading");
@@ -26,6 +33,28 @@ export function PostForm() {
       setError(result.error.message);
       setFieldErrors(result.error.fieldErrors ?? {});
       return;
+    }
+
+    // Hvis event er krysset av, lag også et event i kalender
+
+    if (isEvent) {
+      const res = await fetch("/api/v1/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: data.title,
+          description: data.text,
+          startsAt,
+          location,
+        }),
+      });
+      const eventResult = (await res.json()) as { ok: boolean; error: { message: string } };
+
+      if (!eventResult.ok) {
+        setStatus("error");
+        setError(eventResult.error.message);
+        return;
+      }
     }
 
     setStatus("success");
@@ -42,7 +71,6 @@ export function PostForm() {
   };
 
   const isLoading = status === "loading";
-
   return (
     <form onSubmit={onSubmit}>
       <label>
@@ -69,6 +97,29 @@ export function PostForm() {
         />
       </label>
       {fieldErrors.text ? <p>{fieldErrors.text[0]}</p> : null}
+
+            <label>
+        <input
+          type="checkbox"
+          checked={isEvent}
+          onChange={(e) => setIsEvent(e.target.checked)}
+          disabled={isLoading}
+        />
+        Event
+      </label>
+
+      {isEvent && (
+        <>
+          <label>
+            Dato og tid
+            <input type="datetime-local" value={startsAt} onChange={(e) => setStartsAt(e.target.value)} disabled={isLoading} />
+          </label>
+          <label>
+            Sted
+            <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} disabled={isLoading} />
+          </label>
+        </>
+      )}
 
       <button type="submit" disabled={isLoading}>
         {isLoading ? "Lagrer..." : "Publiser innlegg"} trykk her
