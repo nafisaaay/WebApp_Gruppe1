@@ -1,4 +1,8 @@
 import { getMonthGrid, toDateKey } from "@/app/components/calendar/calendarUtils";
+import type { Event } from "@/db/schema";
+
+
+
 
 // short vises i tabellen, long vises som tooltip og leses opp av skjermlesere
 // Universell utforming you know
@@ -15,11 +19,11 @@ const WEEKDAYS = [
 interface MonthGridProps {
     year: number;
     month: number; // 0-11
+    events: Event[];
 }
 
-
 // Tegner rutenettet for en måned som en HTML-tabell.
-export function MonthGrid({ year, month }: MonthGridProps) {
+export function MonthGrid({ year, month, events }: MonthGridProps) {
     const grid = getMonthGrid(year, month);
 
     // F.eks. "oktober 2026"
@@ -37,7 +41,7 @@ export function MonthGrid({ year, month }: MonthGridProps) {
                     {WEEKDAYS.map((day) => (
                         <th key={day.short} className="p-3">
                             {/* <abbr> viser hele navnet når man hovrer over med musa (universell utf.) */}
-                            <abbr title={day.long}>{day.short}</abbr> 
+                            <abbr title={day.long}>{day.short}</abbr>
                         </th>
                     ))}
                 </tr>
@@ -47,18 +51,27 @@ export function MonthGrid({ year, month }: MonthGridProps) {
                 {/* Datoen brukes her som key, fordi den er unik for hver uke og hver dag */}
                 {grid.map((week) => (
                     <tr key={toDateKey(week[0])}>
-                        {week.map((day) => (
-                            <td key={toDateKey(day)} 
-                            // Dager fra forrige/neste måned vises i grått
-                            className={`p-3 text-center
+                        {week.map((day) => {
+                            const dayEvents = events.filter(
+                                (event) => toDateKey(event.startsAt) === toDateKey(day)
+                            );
+                            return (
+                                <td key={toDateKey(day)}
+                                    // Dager fra forrige/neste måned vises i grått
+                                    className={`p-3 text-center
                                 ${day.getMonth() !== month ? "text-gray-400" : ""}`}>
                                     {day.getDate()}
+
+
+                                    {dayEvents.map((event) => (
+                                        <p key={event.id} className="text-xs">{event.title}</p>
+                                    ))}
                                 </td>
-                        ))}
+                            );
+                        })}
                     </tr>
                 ))}
             </tbody>
-
         </table>
     );
 }
