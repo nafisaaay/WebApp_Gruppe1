@@ -1,16 +1,17 @@
-import { render, route } from "rwsdk/router";
-import { defineApp } from "rwsdk/worker";
-import { postRoutes } from "./features/post/post-routes";
 import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/home";
-import { ForumPage } from "./features/pages/ForumPage";
-import { userController } from "./features/user/user-controller";
-import { auth } from "./features/auth/auth";
-import { sessionMiddleware  } from "./features/user/middleware/session";
+import { render, route } from "rwsdk/router";
+import { defineApp } from "rwsdk/worker";
 import { Login } from "./app/pages/login";
 import { Register } from "./app/pages/register";
+import { auth } from "./features/auth/auth";
+import { eventRoutes } from "./features/events/event-routes";
+import { ForumPage } from "./features/pages/ForumPage";
+import { postRoutes } from "./features/post/post-routes";
 import { requireUserPage, requireUserRoute } from "./features/user/middleware/guards";
+import { sessionMiddleware } from "./features/user/middleware/session";
+import { userController } from "./features/user/user-controller";
 
 export type AppContext = {};
 
@@ -28,6 +29,10 @@ export default defineApp([
     // ---- Innlegg -----
     ...postRoutes,
 
+    // ---- Events -----
+    ...eventRoutes,
+
+
     // ---- Status -----
     route("/api/status", () => Response.json({ status: "ok", version: "0.1.0" })),
 
@@ -39,3 +44,4 @@ export default defineApp([
         route("/register", Register),
     ]),
 ]);
+
