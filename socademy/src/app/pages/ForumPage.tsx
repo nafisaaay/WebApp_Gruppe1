@@ -1,5 +1,5 @@
-import { PostForm } from "../post/components/PostForm";
-import {PostList} from "../post/components/PostList"
+import { PostForm } from "@/features/post/components/PostForm"
+import { PostList } from "@/features/post/components/PostList"
 
 export function ForumPage(){
    return(

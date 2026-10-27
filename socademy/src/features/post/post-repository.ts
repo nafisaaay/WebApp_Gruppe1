@@ -1,6 +1,6 @@
 import { desc, eq, or, like } from "drizzle-orm";
-import { posts, type CreatePost, type UpdatePost, type Post } from "@/db/schema";
-import type { BaseRepository } from "../base-repository";
+import { posts, type CreatePost, type UpdatePost, type Post } from "@/db/schema/schema";
+import type { BaseRepository } from "../../shared/base-repository";
 import { db, type DB } from "@/db";
 import { LIST_LIMIT_MAX, PostListParams } from "./utils/validate-post-params";
 

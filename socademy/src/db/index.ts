@@ -1,7 +1,7 @@
 import { env } from "cloudflare:workers";
 import { drizzle } from "drizzle-orm/d1";
 import { SQLiteAsyncDatabase } from "drizzle-orm/sqlite-core";
-import * as schema from "./schema"
+import * as schema from "./schema/schema"
 import { relations } from "./relations";
 
 

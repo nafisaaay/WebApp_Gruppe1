@@ -1,5 +1,5 @@
 
-import type { User } from "@/db/auth-schema";
+import type { User } from "@/db/schema/auth-schema";
 import type { Session } from "@/features/user/middleware/session";
 
 // Det klienten får vite om innlogget bruker.

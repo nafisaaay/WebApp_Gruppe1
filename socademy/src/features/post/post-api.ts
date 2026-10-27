@@ -1,5 +1,5 @@
 import { PostDTO } from "./post-mapper"
-import { AppError } from "../results"
+import { AppError } from "../../shared/results"
 
 type GetAllPostResult =
   | { ok: true; data: PostDTO[] }

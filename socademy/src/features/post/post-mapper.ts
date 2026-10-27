@@ -1,4 +1,4 @@
-import type { Post } from "@/db/schema";
+import type { Post } from "@/db/schema/schema";
 
 export type PostDTO = {
     id: number;

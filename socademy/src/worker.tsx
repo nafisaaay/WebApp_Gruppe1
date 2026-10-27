@@ -4,7 +4,7 @@ import { postRoutes } from "./features/post/post-routes";
 import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/home";
-import { ForumPage } from "./features/pages/ForumPage";
+import { ForumPage } from "./app/pages/ForumPage";
 import { userController } from "./features/user/user-controller";
 import { auth } from "./features/auth/auth";
 import { sessionMiddleware  } from "./features/user/middleware/session";
