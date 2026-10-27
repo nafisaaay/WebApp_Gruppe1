@@ -1,8 +1,7 @@
-import { BaseController } from "../base-controller";
+import { BaseController } from "@/shared/base-controller";
 import { postService, PostService } from "./post-scervice";
 import { RequestInfo } from "rwsdk/worker";
 import { parseParams } from "./utils/parse-params";
-import { demoDelay, demoFailure } from "@/lib/demo-chaos";
 
 export interface PostController extends BaseController {}
 const parseId = (value: string | undefined): number | null => {

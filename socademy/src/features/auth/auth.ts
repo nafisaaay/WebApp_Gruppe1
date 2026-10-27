@@ -2,7 +2,7 @@ import { env } from "cloudflare:workers";
 import { APIError, betterAuth } from 'better-auth';
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from '@/db';
-import { account, session, user, verification } from "@/db/auth-schema";
+import { account, session, user, verification } from "@/db/schema/auth-schema";
 import { SCHOOL_DOMAIN, PSWRD_MIN, PSWRD_MAX  } from "../user/validation/validateLogin";
 
 

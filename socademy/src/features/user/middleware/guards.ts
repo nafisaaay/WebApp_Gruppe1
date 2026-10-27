@@ -1,8 +1,8 @@
 //LEKSJON 12
 import { ErrorResponse, requestInfo } from "rwsdk/worker";
 import type { Session } from "./session";
-import { fail } from "@/features/base-controller";
-import { Errors } from "@/features/results";
+import { fail } from "@/shared/base-controller";
+import { Errors } from "@/shared/results";
 import type { RouteMiddleware } from "rwsdk/router";
 
 // ============== Interruptors ================

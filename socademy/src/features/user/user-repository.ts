@@ -1,11 +1,11 @@
-import type { BaseRepository } from "../base-repository";
-import { db, type DB } from "@/db";
+import type { BaseRepository } from "../../shared/base-repository";
+import type { DB } from "@/db";
 import type { USER } from "./loginTypes";
-import { user } from "@/db/schema";
+import { User, user } from "@/db/schema/schema";
 import { eq } from "drizzle-orm";
-import { Errors } from "../results";
+import { Errors } from "../../shared/results";
 
-export interface UserRepository extends BaseRepository<USER, never, never>{}
+export interface UserRepository extends BaseRepository<USER, never, never, string>{}
 
 export function createUserRepository(_db : DB): UserRepository{
     return {
@@ -14,7 +14,7 @@ export function createUserRepository(_db : DB): UserRepository{
                 const [row] = await _db
                     .select({ id: user.id, email: user.email })
                     .from(user)
-                    .where(eq(user.id, id))
+                    .where(eq(user.id, id.toString()))
                     .limit(1);
                 return { ok: true, data: row ?? null };
             } catch {
@@ -25,6 +25,7 @@ export function createUserRepository(_db : DB): UserRepository{
         getAll: async() => ({ ok: false, error: Errors.notSupported }),
         create: async() => ({ ok: false, error: Errors.notSupported }),
         remove: async() => ({ ok: false, error: Errors.notSupported }),
+        update:async() => ({ ok: false, error: Errors.notSupported }),
     };
 } 
 
