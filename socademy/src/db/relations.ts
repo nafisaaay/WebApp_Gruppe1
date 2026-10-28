@@ -9,7 +9,7 @@ export const relations = defineRelations(schema, (r) => ({
         author: r.one.user({
             from: r.posts.userId,
             to: r.user.id,
-            optional: false, // sier ifra til drizzle at en post ALLTID har en authro.
+            optional: false, // sier ifra til drizzle at en post ALLTID har en author.
         }),
     }
 }));
