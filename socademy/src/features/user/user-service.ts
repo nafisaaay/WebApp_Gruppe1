@@ -1,7 +1,7 @@
 import { db } from '@/db';
 import type { BaseService } from "../../shared/base-service";
 import { Errors } from "../../shared/results";
-import type { USER } from "./loginTypes";
+import type { USER } from "./login-types";
 import { createUserRepository } from './user-repository';
 
 const userRepository = createUserRepository(db);

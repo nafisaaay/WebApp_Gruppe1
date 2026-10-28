@@ -1,5 +1,5 @@
 import { DB } from "@/db"; 
-import { postService } from "../post-scervice";
+import { postService } from "../post-service";
 
 export async function PostList() {
   const result = await postService.getAll();

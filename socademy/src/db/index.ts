@@ -9,4 +9,4 @@ export const db = drizzle(env.DB, { relations });
 
 export { schema, relations};
 
-export type DB = SQLiteAsyncDatabase<any, any, typeof relations>
+export type DB = typeof db;
