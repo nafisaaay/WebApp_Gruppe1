@@ -21,7 +21,7 @@ type RemovePostResult =
 export async function getAllPosts(params: Record<string, string> = {}): Promise<GetAllPostResult> {
   const query = new URLSearchParams(params).toString();
   try {
-    const response = await fetch(`/api/v1/posts?${query}`);
+    const response = await fetch(`/api/v3/posts?${query}`);
     return (await response.json()) as GetAllPostResult;
   } catch (error) {
     console.error(error);
@@ -43,7 +43,7 @@ export async function createPost(data:{
 
 } ) :Promise<PostResult>{
     try{
-        const response = await fetch("/api/v1/posts",{
+        const response = await fetch("/api/v3/posts",{
             method: "POST",
             headers:{
                 "Content-Type": "application/json"
@@ -72,7 +72,7 @@ export async function updatePost(
   data: { text?: string; title?: string },
 ): Promise<PostResult> {
   try {
-    const response = await fetch(`/api/v1/posts/${id}`, {
+    const response = await fetch(`/api/v3/posts/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -95,7 +95,7 @@ export async function updatePost(
 
 export async function getPost(id: number): Promise<PostResult> {
   try {
-    const response = await fetch(`/api/v1/posts/${id}`);
+    const response = await fetch(`/api/v3/posts/${id}`);
     return (await response.json()) as PostResult;
   } catch (error) {
     console.error(error);
@@ -113,7 +113,7 @@ export async function getPost(id: number): Promise<PostResult> {
 
 export async function removePost(id:number): Promise<RemovePostResult>{
     try{
-         const response = await fetch(`/api/v1/posts/${id}`, {
+         const response = await fetch(`/api/v3/posts/${id}`, {
             method: "DELETE",
          })
          console.log(response.ok, response.status, response.statusText);
