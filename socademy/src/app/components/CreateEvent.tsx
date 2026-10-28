@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, type SubmitEvent } from "react";
 
 export function CreateEvent() {
+    const [isOpen, setIsOpen] = useState(false);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
@@ -9,9 +10,10 @@ export function CreateEvent() {
     const [location, setLocation] = useState("");
     const [category, setCategory] = useState("");
     const [isOutdoor, setIsOutdoor] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     return (
-        <form>
+        <form onSubmit = {onSubmit} >
             <label htmlFor="title">Tittel</label>
             <input
                 id="title"
