@@ -20,7 +20,7 @@
 	},
 	// Environment variables
 	"vars": {
-		"BETTER_AUTH_URL": "http://localhost:5173"
+		"BETTER_AUTH_URL": "https://socademy.socademy-hiof.workers.dev"
 	},
 	"d1_databases": [
 		{
