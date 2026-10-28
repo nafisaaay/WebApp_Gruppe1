@@ -30,7 +30,7 @@ export default defineApp([
     ...postRoutes,
 
     // ---- Status -----
-    route("/api/status", () => Response.json({ status: "ok", version: "0.1.0" })),
+    route("/api/status", () => Response.json({ status: "ok", version: "0.3.0" })),
 
     // ---- Sider ----
     render(Document, [
