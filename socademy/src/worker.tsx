@@ -1,8 +1,21 @@
+
 import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
 import { Home } from "@/app/pages/home";
 import { render, route } from "rwsdk/router";
 import { defineApp } from "rwsdk/worker";
+
+import { layout, render, route } from "rwsdk/router";
+import { defineApp } from "rwsdk/worker";
+import { postRoutes } from "./features/post/post-routes";
+import { Document } from "@/app/document";
+import { setCommonHeaders } from "@/app/headers";
+import { Home } from "@/app/pages/home";
+import { ForumPage } from "./app/pages/ForumPage";
+import { userController } from "./features/user/user-controller";
+import { auth } from "./features/auth/auth";
+import { sessionMiddleware  } from "./features/user/middleware/session";
+
 import { Login } from "./app/pages/login";
 import { Register } from "./app/pages/register";
 import { auth } from "./features/auth/auth";
@@ -10,8 +23,11 @@ import { eventRoutes } from "./features/events/event-routes";
 import { ForumPage } from "./features/pages/ForumPage";
 import { postRoutes } from "./features/post/post-routes";
 import { requireUserPage, requireUserRoute } from "./features/user/middleware/guards";
+
 import { sessionMiddleware } from "./features/user/middleware/session";
 import { userController } from "./features/user/user-controller";
+
+import { AppLayout } from "./app/components/layout/AppLayout";
 
 export type AppContext = {};
 
@@ -38,8 +54,12 @@ export default defineApp([
 
     // ---- Sider ----
     render(Document, [
-        route("/", [requireUserPage, Home]),
-        route("/forum", [requireUserPage, ForumPage]),
+        // Innloggede sider: får UserProvider fra AppLayout
+        layout(AppLayout, [
+            route("/", [requireUserPage, Home]),
+            route("/forum", [requireUserPage, ForumPage]),
+        ]),
+        // Åpne sider
         route("/login", Login),
         route("/register", Register),
     ]),

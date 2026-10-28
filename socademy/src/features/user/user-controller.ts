@@ -1,6 +1,6 @@
-import { fail, type BaseController } from "../base-controller";
+import { fail, type BaseController } from "../../shared/base-controller";
 import { userService } from "./user-service";
-import { Errors } from "../results";
+import { Errors } from "../../shared/results";
 
 export interface UserController extends BaseController {}
 

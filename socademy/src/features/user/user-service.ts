@@ -1,10 +1,7 @@
 import { db } from '@/db';
-import { z } from 'zod';
-import { auth } from "../auth/auth";
-import type { BaseService } from "../base-service";
-import { Errors } from "../results";
+import type { BaseService } from "../../shared/base-service";
+import { Errors } from "../../shared/results";
 import type { USER } from "./loginTypes";
-import { loginSchema } from "./utils/loginSchema";
 import { createUserRepository } from './user-repository';
 
 const userRepository = createUserRepository(db);
@@ -12,30 +9,6 @@ const userRepository = createUserRepository(db);
 export interface UserService extends BaseService<USER, never>{}
 
 export const userService: UserService = {
-    /*
-    create: async (input) => {
-        const parsed = loginSchema.safeParse(input);
-        if(!parsed.success){
-            return { 
-                ok: false, 
-                error: { ...Errors.badRequest, fieldErrors: z.flattenError(parsed.error).fieldErrors },
-            };
-        }
-
-        try {
-            const { headers, response } = await loginAuth.api.signInEmail({
-                body: parsed.data,
-                returnHeaders: true,
-            });
-            return {
-                ok: true,
-                data: { user: {id: response.user.id, email: response.user.email }, headers },
-            };
-        } catch {
-            return {ok: false, error: {...Errors.unauthorized, message: "Feil e-post eller passord."}}
-        }
-    },
-    */
 
     get: async (id, userId) => {
         if(!userId) return { ok: false, error: Errors.unauthorized };
@@ -50,7 +23,8 @@ export const userService: UserService = {
 
     create: async () => ({ ok: false, error: Errors.notSupported }),
     getAll: async () => ({ ok: false, error: Errors.notSupported }),
-    remove: async () => ({ ok: false, error: Errors.notSupported })       
+    remove: async () => ({ ok: false, error: Errors.notSupported }),
+    update: async () => ({ ok: false, error: Errors.notSupported })      
 }
 
 

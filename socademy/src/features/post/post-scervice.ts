@@ -1,4 +1,4 @@
-import type { BaseService } from "../base-service";
+import type { BaseService } from "@/shared/base-service";
 import { postRepository, type PostRepository } from "./post-repository";
 import type { Params } from "./utils/parse-params"
 import { validatePostParams } from "./utils/validate-post-params";
