@@ -1,9 +1,9 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "2a259c25-b9a7-4ae1-8b0e-a79917558986",
+  "id": "ed205775-d1d1-4446-bb1c-074f4116660e",
   "prevIds": [
-    "77207c3b-a883-436a-af61-276201a9f435"
+    "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
@@ -23,15 +23,15 @@
       "entityType": "tables"
     },
     {
+      "name": "users",
+      "entityType": "tables"
+    },
+    {
       "name": "account",
       "entityType": "tables"
     },
     {
       "name": "session",
-      "entityType": "tables"
-    },
-    {
-      "name": "users",
       "entityType": "tables"
     },
     {
@@ -214,17 +214,7 @@
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "userId",
-      "entityType": "columns",
-      "table": "posts"
-    },
-    {
-      "type": "text",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "userName",
+      "name": "author_id",
       "entityType": "columns",
       "table": "posts"
     },
@@ -277,6 +267,86 @@
       "name": "bio",
       "entityType": "columns",
       "table": "profile"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "email",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "false",
+      "generated": null,
+      "name": "email_verified",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "image",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "'user'",
+      "generated": null,
+      "name": "role",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "users"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "updated_at",
+      "entityType": "columns",
+      "table": "users"
     },
     {
       "type": "text",
@@ -496,86 +566,6 @@
       "generated": null,
       "name": "id",
       "entityType": "columns",
-      "table": "users"
-    },
-    {
-      "type": "text",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "name",
-      "entityType": "columns",
-      "table": "users"
-    },
-    {
-      "type": "text",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "email",
-      "entityType": "columns",
-      "table": "users"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": "false",
-      "generated": null,
-      "name": "email_verified",
-      "entityType": "columns",
-      "table": "users"
-    },
-    {
-      "type": "text",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "image",
-      "entityType": "columns",
-      "table": "users"
-    },
-    {
-      "type": "text",
-      "notNull": true,
-      "autoincrement": false,
-      "default": "'user'",
-      "generated": null,
-      "name": "role",
-      "entityType": "columns",
-      "table": "users"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "created_at",
-      "entityType": "columns",
-      "table": "users"
-    },
-    {
-      "type": "integer",
-      "notNull": true,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "updated_at",
-      "entityType": "columns",
-      "table": "users"
-    },
-    {
-      "type": "text",
-      "notNull": false,
-      "autoincrement": false,
-      "default": null,
-      "generated": null,
-      "name": "id",
-      "entityType": "columns",
       "table": "verification"
     },
     {
@@ -627,6 +617,21 @@
       "name": "updated_at",
       "entityType": "columns",
       "table": "verification"
+    },
+    {
+      "columns": [
+        "author_id"
+      ],
+      "tableTo": "users",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "nameExplicit": false,
+      "name": "fk_posts_author_id_users_id_fk",
+      "entityType": "fks",
+      "table": "posts"
     },
     {
       "columns": [
@@ -714,6 +719,15 @@
         "id"
       ],
       "nameExplicit": false,
+      "name": "users_pk",
+      "table": "users",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
       "name": "account_pk",
       "table": "account",
       "entityType": "pks"
@@ -725,15 +739,6 @@
       "nameExplicit": false,
       "name": "session_pk",
       "table": "session",
-      "entityType": "pks"
-    },
-    {
-      "columns": [
-        "id"
-      ],
-      "nameExplicit": false,
-      "name": "users_pk",
-      "table": "users",
       "entityType": "pks"
     },
     {
@@ -798,21 +803,21 @@
     },
     {
       "columns": [
-        "token"
-      ],
-      "nameExplicit": false,
-      "name": "session_token_unique",
-      "entityType": "uniques",
-      "table": "session"
-    },
-    {
-      "columns": [
         "email"
       ],
       "nameExplicit": false,
       "name": "users_email_unique",
       "entityType": "uniques",
       "table": "users"
+    },
+    {
+      "columns": [
+        "token"
+      ],
+      "nameExplicit": false,
+      "name": "session_token_unique",
+      "entityType": "uniques",
+      "table": "session"
     }
   ],
   "renames": []

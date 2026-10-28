@@ -52,7 +52,7 @@ export const posts = sqliteTable("posts", {
     id: int().primaryKey({ autoIncrement: true}),
     text: text().notNull(),
     title: text().notNull(),
-    authorId: text("author_id")
+    userId: text("user_id")
             .notNull()
             .references(() => user.id, { onDelete: "cascade" }),
     createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
@@ -69,6 +69,8 @@ export const comments = sqliteTable("comments", {
     createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
     updatedAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 })
+
+export type User = typeof user.$inferSelect;
 
 export type Post = typeof posts.$inferSelect;
 export type CreatePost = typeof posts.$inferInsert;

@@ -1,4 +1,8 @@
-import type { Post } from "@/db/schema/schema";
+import type { Post, User } from "@/db/schema/schema";
+
+export type PostWithAuthor = Post & {
+    author: Pick<User, "id" | "name">;
+};
 
 export type PostDTO = {
     id: number;
@@ -10,14 +14,14 @@ export type PostDTO = {
     updatedAt: string;
 }
 
-export function toPostDTO(post : Post) : PostDTO{
-    const { id, title, text, userId, userName, createdAt, updatedAt } = post;
+export function toPostDTO(post : PostWithAuthor) : PostDTO{
+    const { id, title, text, userId, author, createdAt, updatedAt } = post;
     return{
         id,
         title,
         text,
         userId,
-        userName,
+        userName: author.name,
         createdAt: createdAt.toISOString(),
         updatedAt: updatedAt.toISOString(),
     }

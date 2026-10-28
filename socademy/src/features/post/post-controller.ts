@@ -1,5 +1,5 @@
 import { BaseController } from "@/shared/base-controller";
-import { postService, PostService } from "./post-scervice";
+import { postService, PostService } from "./post-service";
 import { RequestInfo } from "rwsdk/worker";
 import { parseParams } from "./utils/parse-params";
 
