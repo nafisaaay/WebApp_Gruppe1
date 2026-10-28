@@ -18,6 +18,17 @@ const invalidIdResponse = () =>
     { status: 400 },
   );
 
+
+const unauthorizedResponse = () =>
+  Response.json(
+    {
+      ok: false,
+      error: { code: 401, message: "you must be logged in", fieldErrors: {} },
+    },
+    { status: 401 },
+  );
+
+
 export function createPostController (_service : PostService): PostController{
     return {
         async getAll({request, ctx} : RequestInfo ){
@@ -43,6 +54,9 @@ export function createPostController (_service : PostService): PostController{
         )
     },
     async create({request, ctx}: RequestInfo ){
+        const userId = ctx.session.userId;
+        if (!userId) return unauthorizedResponse();
+        
         let body: unknown;
         try{
             body = await request.json();
@@ -60,8 +74,7 @@ export function createPostController (_service : PostService): PostController{
                 {status: 400}
             )
         };
-        const TEMP_USER_ID = "1";
-         const result = await _service.create(body, TEMP_USER_ID);
+        const result = await _service.create(body, userId);
         return result.ok 
         ? Response.json(result, {
             status: 201,
@@ -71,6 +84,7 @@ export function createPostController (_service : PostService): PostController{
         });
        
     },
+
    async get({params}: RequestInfo){ 
     const id = parseId(params.id);
     if (id === null) return invalidIdResponse();
@@ -83,20 +97,28 @@ export function createPostController (_service : PostService): PostController{
         status: Number(result.error.code),
     }) 
    },
-   async remove({ params }: RequestInfo) {
-    const id = parseId(params.id);
-    if (id === null) return invalidIdResponse();
-    const TEMP_USER_ID = "1";
-    const result = await _service.remove(id, TEMP_USER_ID);
+   async remove({ params, ctx }: RequestInfo) {
+        const userId = ctx.session.userId;
+        if (!userId) return unauthorizedResponse();
 
-    return result.ok
-     ? new Response(null, { status: 204 })
-    : Response.json(result, { status: Number(result.error.code) });
-},
-
-    async update({request, params}: RequestInfo) {
         const id = parseId(params.id);
         if (id === null) return invalidIdResponse();
+
+        const result = await _service.remove(id, userId);
+
+        return result.ok
+        ? new Response(null, { status: 204 })
+        : Response.json(result, { status: Number(result.error.code) });
+    },
+
+    async update({request, params, ctx}: RequestInfo) {
+        const userId = ctx.session.userId;
+        if (!userId) return unauthorizedResponse();
+        
+        
+        const id = parseId(params.id);
+        if (id === null) return invalidIdResponse();
+        
         let body: unknown;
         try{
             body = await request.json();
@@ -114,8 +136,8 @@ export function createPostController (_service : PostService): PostController{
             status: 400
         })
         };
-        const TEMP_USER_ID = "1";
-        const result = await _service.update(id, body,TEMP_USER_ID)
+
+        const result = await _service.update(id, body,userId)
 
         return result.ok 
         ? Response.json(result, {

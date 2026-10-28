@@ -1,9 +1,9 @@
 {
   "version": "7",
   "dialect": "sqlite",
-  "id": "ed205775-d1d1-4446-bb1c-074f4116660e",
+  "id": "9d397f00-3476-4aac-be0a-5bf44006f676",
   "prevIds": [
-    "00000000-0000-0000-0000-000000000000"
+    "2a259c25-b9a7-4ae1-8b0e-a79917558986"
   ],
   "ddl": [
     {
@@ -214,7 +214,7 @@
       "autoincrement": false,
       "default": null,
       "generated": null,
-      "name": "author_id",
+      "name": "user_id",
       "entityType": "columns",
       "table": "posts"
     },
@@ -620,7 +620,7 @@
     },
     {
       "columns": [
-        "author_id"
+        "user_id"
       ],
       "tableTo": "users",
       "columnsTo": [
@@ -629,7 +629,7 @@
       "onUpdate": "NO ACTION",
       "onDelete": "CASCADE",
       "nameExplicit": false,
-      "name": "fk_posts_author_id_users_id_fk",
+      "name": "fk_posts_user_id_users_id_fk",
       "entityType": "fks",
       "table": "posts"
     },
@@ -820,5 +820,7 @@
       "table": "session"
     }
   ],
-  "renames": []
+  "renames": [
+    "posts.userId->posts.user_id"
+  ]
 }

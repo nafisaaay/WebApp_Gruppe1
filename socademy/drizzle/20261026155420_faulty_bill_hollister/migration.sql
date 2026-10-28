@@ -1,49 +1,8 @@
-CREATE TABLE `comments` (
-	`id` integer PRIMARY KEY AUTOINCREMENT,
-	`text` text NOT NULL,
-	`userId` text NOT NULL,
-	`userName` text NOT NULL,
-	`postId` integer NOT NULL,
-	`createdAt` integer NOT NULL,
-	`updatedAt` integer NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE `events` (
-	`id` integer PRIMARY KEY AUTOINCREMENT,
-	`title` text NOT NULL,
-	`description` text,
-	`location` text,
-	`startsAt` integer NOT NULL,
-	`endsAt` integer,
-	`createdAt` integer NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE `posts` (
-	`id` integer PRIMARY KEY AUTOINCREMENT,
-	`text` text NOT NULL,
-	`title` text NOT NULL,
-	`author_id` text NOT NULL,
-	`createdAt` integer NOT NULL,
-	`updatedAt` integer NOT NULL,
-	CONSTRAINT `fk_posts_author_id_users_id_fk` FOREIGN KEY (`author_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
-);
---> statement-breakpoint
 CREATE TABLE `profile` (
 	`id` text PRIMARY KEY,
 	`user_id` text NOT NULL UNIQUE,
 	`bio` text,
 	CONSTRAINT `fk_profile_user_id_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
-);
---> statement-breakpoint
-CREATE TABLE `users` (
-	`id` text PRIMARY KEY,
-	`name` text NOT NULL,
-	`email` text NOT NULL UNIQUE,
-	`email_verified` integer DEFAULT false NOT NULL,
-	`image` text,
-	`role` text DEFAULT 'user' NOT NULL,
-	`created_at` integer NOT NULL,
-	`updated_at` integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `account` (
@@ -73,6 +32,17 @@ CREATE TABLE `session` (
 	`user_agent` text,
 	`user_id` text NOT NULL,
 	CONSTRAINT `fk_session_user_id_users_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+);
+--> statement-breakpoint
+CREATE TABLE `users` (
+	`id` text PRIMARY KEY,
+	`name` text NOT NULL,
+	`email` text NOT NULL UNIQUE,
+	`email_verified` integer DEFAULT false NOT NULL,
+	`image` text,
+	`role` text DEFAULT 'user' NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE `verification` (
