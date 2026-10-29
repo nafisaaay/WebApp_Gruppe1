@@ -1,3 +1,4 @@
+import type { Event } from "@/db/schema/schema";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MonthGrid } from "./MonthGrid";
 import { addMonths, monthHref, type YearMonth } from "./calendarUtils";
@@ -12,7 +13,10 @@ import { addMonths, monthHref, type YearMonth } from "./calendarUtils";
  * Komponenten leser ikke URL-en selv. Siden (home.tsx) gjør det og sender inn
  * year/month som props. Da kan Calendar gjenbrukes og testes enkelt.
  */
-export function Calendar( { year, month }: YearMonth) {
+
+type CalendarProps = YearMonth & { events: Event[] };
+
+export function Calendar( { year, month,events }: CalendarProps) {
     const prev = addMonths({ year, month }, -1);
     const next = addMonths({ year, month }, 1);
 
@@ -41,7 +45,7 @@ export function Calendar( { year, month }: YearMonth) {
                     </a>
                 </nav>
             </div>
-            <MonthGrid year={year} month={month} />
+            <MonthGrid year={year} month={month} events = {events}/>
         </section>
     );
 }

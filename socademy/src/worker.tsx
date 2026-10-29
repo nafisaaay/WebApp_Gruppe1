@@ -1,18 +1,19 @@
-import { layout, render, route } from "rwsdk/router";
-import { defineApp } from "rwsdk/worker";
-import { postRoutes } from "./features/post/post-routes";
 import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
-import { Home } from "./app/pages/home";
+import { layout, render, route } from "rwsdk/router";
+import { defineApp } from "rwsdk/worker";
+import { AppLayout } from "./app/components/layout/AppLayout";
 import { ForumPage } from "./app/pages/ForumPage";
-import { UnderConstruction } from "./app/pages/UnderConstruction";
-import { userController } from "./features/user/user-controller";
-import { auth } from "./features/auth/auth";
-import { sessionMiddleware  } from "./features/auth/middleware/session";
+import { Home } from "./app/pages/home";
 import { Login } from "./app/pages/login";
 import { Register } from "./app/pages/register";
+import { UnderConstruction } from "./app/pages/UnderConstruction";
+import { auth } from "./features/auth/auth";
 import { requireUserPage, requireUserRoute } from "./features/auth/middleware/guards";
-import { AppLayout } from "./app/components/layout/AppLayout";
+import { sessionMiddleware } from "./features/auth/middleware/session";
+import { postRoutes } from "./features/post/post-routes";
+import { userController } from "./features/user/user-controller";
+import { eventRoutes } from "./features/events/event-routes";
 
 export type AppContext = {};
 
@@ -29,6 +30,10 @@ export default defineApp([
 
     // ---- Innlegg -----
     ...postRoutes,
+
+
+    // ---- Events -----
+    ...eventRoutes,
 
     // ---- Status -----
     route("/api/status", () => Response.json({ status: "ok", version: "0.3.0" })),

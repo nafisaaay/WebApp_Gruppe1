@@ -1,3 +1,4 @@
+import type { Event } from "@/db/schema/schema";
 import { getMonthGrid, toDateKey } from "./calendarUtils";
 
 // short vises i tabellen, long vises som tooltip og leses opp av skjermlesere
@@ -16,11 +17,12 @@ interface MonthGridProps {
     year: number;
     month: number; // 0-11
     today?: Date; // kan sendes inn i tester, ellers brukes dagens dato
+    events?: Event[];
 }
 
 
 // Tegner rutenettet for en måned som en HTML-tabell.
-export function MonthGrid({ year, month, today = new Date() }: MonthGridProps) {
+export function MonthGrid({ year, month, today = new Date(), events = [] }: MonthGridProps) {
     const grid = getMonthGrid(year, month);
     const todayKey = toDateKey(today);
 
@@ -54,6 +56,11 @@ export function MonthGrid({ year, month, today = new Date() }: MonthGridProps) {
                             const key = toDateKey(day);
                             const isToday = key === todayKey;
                             const isOtherMonth = day.getMonth() !== month;
+
+                            const dayEvents = events.filter(
+                                (event) => toDateKey(event.startsAt) === key
+                            );
+
                             return (
                                 <td key={key} className="p-1">
                                     <time
@@ -63,9 +70,13 @@ export function MonthGrid({ year, month, today = new Date() }: MonthGridProps) {
                                         className={`mx-auto flex h-14 max-w-21 items-center justify-center rounded-xl border text-base
                                             ${isToday ? "border-accent font-semibold text-accent" : "border-transparent"}
                                             ${isOtherMonth ? "text-faint" : ""}`}
-                                    >
+                                     >
                                         {day.getDate()}
                                     </time>
+
+                                    {dayEvents.map((event) => (
+                                        <p key={event.id} className="truncate text-xs">{event.title}</p>
+                                    ))}
                                 </td>
                             );
                         })}

@@ -1,5 +1,6 @@
-import { getMonthGrid, toDateKey } from "@/app/components/calendar/calendarUtils";
 import type { Event } from "@/db/schema/schema";
+import { getMonthGrid, toDateKey } from "./calendarUtils";
+
 
 
 
@@ -19,6 +20,7 @@ const WEEKDAYS = [
 interface MonthGridProps {
     year: number;
     month: number; // 0-11
+    today?: Date;
     events: Event[];
 }
 

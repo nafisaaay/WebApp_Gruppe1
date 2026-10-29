@@ -2,6 +2,7 @@ import { MonthGrid } from "./MonthGrid";
 import { addMonths, monthHref, type YearMonth } from "./calendarUtils";
 import type { Event }  from "@/db/schema/schema";
 
+
 /**
  * Viser en måned med knapper for å bla frem og tilbake
  * 
