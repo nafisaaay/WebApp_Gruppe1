@@ -31,8 +31,7 @@ export function PostForm() {
       return;
     }
 
-    setStatus("success");
-    setData(initialData);
+    window.location.reload();
   };
 
   const onInputChange = (
