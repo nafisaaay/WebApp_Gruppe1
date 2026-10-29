@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { MonthGrid } from "./MonthGrid";
 import { addMonths, monthHref, type YearMonth } from "./calendarUtils";
 
@@ -15,14 +16,31 @@ export function Calendar( { year, month }: YearMonth) {
     const prev = addMonths({ year, month }, -1);
     const next = addMonths({ year, month }, 1);
 
+    // F.eks. "oktober 2026" (stor forbokstav gjøres med CSS: first-letter:uppercase)
+    const monthName = new Date(year, month).toLocaleDateString("nb-NO", {
+        month: "long",
+        year: "numeric",
+    });
+
     return (
-        <section>
-            {/* flex + justify-between: Forrige til venstre, i dag i midten, neste til høyre. */}
-            <nav className="flex justify-between">
-                <a href={monthHref(prev)}>Forrige</a>
-                <a href="/">I dag</a>
-                <a href={monthHref(next)}>Neste</a>
-            </nav>
+        <section aria-labelledby="calendar-title" className="card mt-6 p-5 sm:p-8">
+            <div className="flex flex-wrap items-end justify-between gap-4 border-b border-line pb-5">
+                <div>
+                    <p className="text-xs font-semibold tracking-widest text-brand uppercase">Kalender</p>
+                    <h2 id="calendar-title" className="mt-1 text-3xl font-bold tracking-tight first-letter:uppercase sm:text-4xl">
+                        {monthName}
+                    </h2>
+                </div>
+                <nav aria-label="Bla i måneder" className="flex items-center gap-2">
+                    <a href={monthHref(prev)} className="icon-btn" aria-label="Forrige måned">
+                        <ChevronLeft className="size-5" aria-hidden />
+                    </a>
+                    <a href="/" className="btn-pill">I dag</a>
+                    <a href={monthHref(next)} className="icon-btn" aria-label="Neste måned">
+                        <ChevronRight className="size-5" aria-hidden />
+                    </a>
+                </nav>
+            </div>
             <MonthGrid year={year} month={month} />
         </section>
     );

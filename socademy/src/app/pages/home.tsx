@@ -16,14 +16,13 @@ export function Home({ request }: RequestInfo) {
   return (
     <>
       <Header />
-      {/* 4 kolonner: sidepanel (1) | kalender (2) |  */}
-      <div className="grid grid-cols-4 gap-4">
-        <Sidebar />
-        <main className="col-span-2">
+      <div className="flex flex-col gap-6 px-4 pb-6 sm:px-8 lg:flex-row lg:gap-9">
+        <Sidebar active="kalender" />
+        <main className="min-w-0 flex-1">
           <Calendar year={year} month={month} />
+          {/* UpcomingEvents kommer her når den er klar */}
         </main>
-        {/* UpcomingEvents kommer her når den er klar */}
       </div>
     </>
-  ); 
+  );
 };
