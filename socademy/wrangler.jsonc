@@ -2,7 +2,7 @@
 	// Schema reference for wrangler configuration
 	"$schema": "node_modules/wrangler/config-schema.json",
 	// Name of your worker
-	"name": "__change_me__",
+	"name": "socademy",
 	// Entry point for your worker
 	"main": "src/worker.tsx",
 	// Compatibility settings
@@ -20,7 +20,7 @@
 	},
 	// Environment variables
 	"vars": {
-		"BETTER_AUTH_URL": "http://localhost:5173"
+		"BETTER_AUTH_URL": "https://socademy.socademy-hiof.workers.dev"
 	},
 	"d1_databases": [
 		{

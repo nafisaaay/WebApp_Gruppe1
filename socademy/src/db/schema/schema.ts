@@ -1,7 +1,4 @@
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
-import { relations } from "drizzle-orm/_relations";
-import { user } from "../schema/auth-schema";
-
 export * from "../schema/auth-schema";
 
 // -------- Kalenderhendelser -----------
@@ -41,8 +38,9 @@ export const posts = sqliteTable("posts", {
     id: int().primaryKey({ autoIncrement: true}),
     text: text().notNull(),
     title: text().notNull(),
-    userId: text().notNull(),
-    userName: text().notNull(),
+    userId: text("user_id")
+            .notNull()
+            .references(() => user.id, { onDelete: "cascade" }),
     createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
     updatedAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 })
@@ -58,12 +56,11 @@ export const comments = sqliteTable("comments", {
     updatedAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 })
 
+export type User = typeof user.$inferSelect;
+
 export type Post = typeof posts.$inferSelect;
 export type CreatePost = typeof posts.$inferInsert;
 export type UpdatePost = Partial<CreatePost>
 
 export type Comment = typeof comments.$inferSelect;
 export type CreateComment = typeof comments.$inferInsert;
-
-
-

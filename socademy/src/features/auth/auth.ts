@@ -2,9 +2,10 @@ import { env } from "cloudflare:workers";
 import { APIError, betterAuth } from 'better-auth';
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from '@/db';
-import { account, session, user, verification } from "@/db/schema/auth-schema";
+import { account, session, verification } from "@/db/schema/auth-schema";
+import { user } from "@/db/schema/schema";
 import { SCHOOL_DOMAIN, PSWRD_MIN, PSWRD_MAX  } from "../user/validation/validateLogin";
-
+import { expo } from "@better-auth/expo";
 
 if (!env.BETTER_AUTH_SECRET) {
     throw new Error("BETTER_AUTH_SECRET er ikke satt (.dev.vars lokalt, secret i prod).");
@@ -81,6 +82,15 @@ export const auth = betterAuth ({
             generateId: () => crypto.randomUUID(),
         },
     },
+
+    // Mobil (Expo) er ikke en nettleser og sender ikke Orgin-header.
+    // expo()-pluginen oversetter appens "expo-origin" til en vanlig Origin.
+    plugins: [expo()],
+
+    // Opphav serveren stoler på i tillegg til sin egen adresse.
+    // socademy:// = appens scheme (app.json).
+    // exp:// = Expo Go under utvikling.
+    trustedOrigins: ["socademy://", "exp://**"],
 });
 
 export type AuthSession = typeof auth.$Infer.Session;

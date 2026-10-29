@@ -41,12 +41,24 @@ export function LoginForm() {
         }
     });
   }
-  return (
-      <form onSubmit={onSubmit}>
-          <input type="email" name="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail..." required/>
-          <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Passord..." required/>
-          <button type="submit" disabled={isPending}>{isPending ? "Logger inn..." : "Logg inn"}</button>
-          {error && <p role="alert">{error}</p>}
+    return (
+      <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-5">
+          <label className="block">
+              <span className="label">E-post</span>
+              <input type="email" name="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="navn@hiof.no" className="field h-14 text-base" required/>
+          </label>
+          <label className="block">
+              <span className="label">Passord</span>
+              <input type="password" name="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Passord" className="field h-14 text-base" required/>
+          </label>
+
+          <button
+              type="submit"
+              disabled={isPending}
+              className="mt-3 flex h-14 w-full items-center justify-center rounded-xl bg-ink text-base font-semibold text-white shadow-md transition hover:bg-ink/90 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60">
+              {isPending ? "Logger inn..." : "Logg inn"}
+          </button>
+          {error && <p role="alert" className="error-text">{error}</p>}
       </form>
   );
 }

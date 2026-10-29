@@ -1,6 +1,8 @@
 "use client";
 import { useState, type ChangeEvent, type SubmitEvent } from "react";
 import { createPost } from "../post-api";
+import { Avatar } from "@/app/components/Avatar";
+import { useUser } from "@/features/user/components/UserProvider";
 import type { CreatePostInput } from "../utils/post-schema";
 
 const initialData: CreatePostInput = {
@@ -9,6 +11,7 @@ const initialData: CreatePostInput = {
 };
 
 export function PostForm() {
+  const { user } = useUser();
   const [data, setData] = useState<CreatePostInput>(initialData);
   const [status, setStatus] = useState<"loading" | "error" | "idle" | "success">("idle");
   const [error, setError] = useState<null | string>(null);
@@ -72,32 +75,24 @@ export function PostForm() {
 
   const isLoading = status === "loading";
   return (
-    <form onSubmit={onSubmit}>
-      <label>
-        Tittel
-        <input
-          name="title"
-          placeholder="Tittel"
-          value={data.title}
-          onChange={onInputChange}
-          disabled={isLoading}
-        />
-      </label>
-      {fieldErrors.title ? <p>{fieldErrors.title[0]}</p> : null}
+    <form onSubmit={onSubmit} className="card p-5">
+      <div className="flex gap-4">
+        {user ? <Avatar name={user.name} size="lg" /> : null}
 
-      <label>
-        Tekst
-        <textarea
-          name="text"
-          placeholder="Hva vil du dele?"
-          value={data.text}
-          onChange={onInputChange}
-          disabled={isLoading}
-          rows={5}
-        />
-      </label>
-      {fieldErrors.text ? <p>{fieldErrors.text[0]}</p> : null}
+        <div className="min-w-0 flex-1">
+          <input
+            name="title"
+            placeholder="Tittel"
+            aria-label="Tittel"
+            value={data.title}
+            onChange={onInputChange}
+            disabled={isLoading}
+            className="w-full bg-transparent py-2 text-lg font-semibold outline-none placeholder:text-muted disabled:opacity-60"
+            aria-invalid={fieldErrors.title ? true : undefined}
+          />
+          {fieldErrors.title ? <p className="error-text">{fieldErrors.title[0]}</p> : null}
 
+< HEAD 
             <label>
         <input
           type="checkbox"
@@ -125,8 +120,30 @@ export function PostForm() {
         {isLoading ? "Lagrer..." : "Publiser innlegg"} trykk her
       </button>
 
-      {status === "error" ? <p role="alert">{error}</p> : null}
-      {status === "success" ? <p>Innlegget er publisert</p> : null}
+          <textarea
+            name="text"
+            placeholder="Hva vil du dele?"
+            aria-label="Tekst"
+            value={data.text}
+            onChange={onInputChange}
+            disabled={isLoading}
+            rows={3}
+            className="mt-1 w-full resize-none bg-transparent leading-relaxed outline-none placeholder:text-muted disabled:opacity-60"
+            aria-invalid={fieldErrors.text ? true : undefined}
+          />
+          {fieldErrors.text ? <p className="error-text">{fieldErrors.text[0]}</p> : null}
+        </div>
+      </div>
+ dev
+
+      <div className="mt-3 flex items-center justify-end gap-3 border-t border-line pt-4">
+        {status === "error" ? <p role="alert" className="error-text mr-auto">{error}</p> : null}
+        {status === "success" ? <p className="mr-auto text-sm text-success">Innlegget er publisert</p> : null}
+
+        <button type="submit" disabled={isLoading} className="btn-primary px-6 py-2.5">
+          {isLoading ? "Lagrer..." : "Publiser innlegg"}
+        </button>
+      </div>
     </form>
   );
 }

@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { loginSchema } from './utils/loginSchema';
 
-export type LoginInput = z.infer<typeof loginSchema>;
 
 export interface LOGIN {
     email: string;
@@ -16,4 +15,13 @@ export interface USER {
 export interface LOGINRESULT {
     user: USER;
     headers?: Headers;
+}
+
+// Interface for profilsiden til senere bruk:
+export interface UserProfile {
+    studentNr: string; //bruker studentnr som ID også.
+    name: string;
+    birthDate: Date;
+    studiested: string;
+    rolle: string;
 }
