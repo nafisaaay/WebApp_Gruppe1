@@ -1,14 +1,19 @@
 "use client";
 
-import { useRef, type MouseEvent } from "react";
+import { useRef,useState, type MouseEvent } from "react";
 import { X } from "lucide-react";
 import { Avatar } from "@/app/components/Avatar";
 import type { PostDTO } from "../post-mapper";
+import { DeletePostButton, EditPostForm } from "./PostActions";
+import { useUser } from "@/features/user/components/UserProvider";
 
 // Denne er for å vise en popo-up versjon av innleggene for å gi det en finere effekt.
 export function PostCard({ post }: { post: PostDTO }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = `post-${post.id}-title`;
+  const { user } = useUser();
+  const isOwner = user?.id === post.userId;
+  const [isEditing, setIsEditing] = useState(false);
 
   const open = () => {
     dialogRef.current?.showModal();
@@ -58,9 +63,23 @@ export function PostCard({ post }: { post: PostDTO }) {
             <Avatar name={post.userName} size="lg" />
             <p className="text-lg font-semibold">{post.userName}</p>
           </header>
+                      {isEditing ? (
+            <div className="mt-6">
+              <EditPostForm post={post} onCancel={() => setIsEditing(false)} />
+            </div>
+           ):(
+            <>
+              <h2 id={titleId} className="mt-6 text-2xl font-bold tracking-tight">{post.title}</h2>
+              <p className="mt-3 text-[17px] leading-relaxed whitespace-pre-line">{post.text}</p>
 
-          <h2 id={titleId} className="mt-6 text-2xl font-bold tracking-tight">{post.title}</h2>
-          <p className="mt-3 text-[17px] leading-relaxed whitespace-pre-line">{post.text}</p>
+              {isOwner ? (
+                <div className="mt-6 flex gap-3 border-t border-line pt-4">
+                  <button type="button" onClick={() => setIsEditing(true)}>Rediger</button>
+                  <DeletePostButton post={post} />
+                </div>
+              ) : null}
+            </>
+          )}
         </div>
       </dialog>
     </>
