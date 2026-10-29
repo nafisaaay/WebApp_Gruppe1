@@ -8,16 +8,30 @@ export const events = sqliteTable("events", {
     description: text(),
     location: text(),
     startsAt: int({ mode: "timestamp" }).notNull(),
-
     endsAt: int({ mode: "timestamp" }),
-    createdBy: text("created_by")
-        .notNull()
-        .references(() => user.id, { onDelete: "cascade" }),
     createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 })
 
-export type Event = typeof events.$inferSelect;
-export type CreateEvent = typeof events.$inferInsert;
+
+// -------------- USERS -----------------
+export const user = sqliteTable("users", {
+    id: text("id").primaryKey(),
+    name: text("name").notNull(),
+    email: text("email").notNull().unique(),
+    emailVerified: int("email_verified", { mode: "boolean"})
+        .default(false)
+        .notNull(),
+    image: text("image"),
+    role: text({ enum: ["admin", "user"]})
+        .notNull().default("user"),
+    createdAt: int("created_at", { mode: "timestamp_ms" })
+        .notNull()
+        .$defaultFn(() => new Date()),
+    updatedAt: int("updated_at", { mode: "timestamp_ms" })
+        .notNull()
+        .$default(() => new Date())
+        .$onUpdateFn(() => new Date()),
+});
 
 // -------------- PROFILES -----------------
 // Én profil per bruker. userId er TEKST fordi Better Auth bruker tekst-id-er.
