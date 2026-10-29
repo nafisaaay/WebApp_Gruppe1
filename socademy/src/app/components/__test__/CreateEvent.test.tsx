@@ -1,8 +1,9 @@
 // @vitest-environment happy-dom
-import { CreateEvent } from "@/app/components/CreateEvent";
+import { CreateEvent } from "@/app/pages/CreateEvent";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, test } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
 
 // Test 1 

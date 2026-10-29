@@ -1,4 +1,4 @@
-import type { BaseController } from "../base-controller";
+import { BaseController } from "@/shared/base-controller";
 import { eventsService } from "./events-service";
 
 export const eventsController: BaseController = {
@@ -62,3 +62,4 @@ const result = await eventsService.create(input, userId);
     return Response.json({ message: "Endre et event" });
   },
 };
+

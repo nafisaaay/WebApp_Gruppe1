@@ -1,5 +1,5 @@
 import { getMonthGrid, toDateKey } from "@/app/components/calendar/calendarUtils";
-import type { Event } from "@/db/schema";
+import type { Event } from "@/db/schema/schema";
 
 
 

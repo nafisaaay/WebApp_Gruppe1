@@ -11,9 +11,16 @@ export const events = sqliteTable("events", {
     description: text(),
     location: text(),
     startsAt: int({ mode: "timestamp" }).notNull(),
+
     endsAt: int({ mode: "timestamp" }),
+    createdBy: text("created_by")
+        .notNull()
+        .references(() => user.id, { onDelete: "cascade" }),
     createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 })
+
+export type Event = typeof events.$inferSelect;
+export type CreateEvent = typeof events.$inferInsert;
 
 // -------------- PROFILES -----------------
 // Én profil per bruker. userId er TEKST fordi Better Auth bruker tekst-id-er.

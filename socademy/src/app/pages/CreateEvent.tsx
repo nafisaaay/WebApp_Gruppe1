@@ -12,6 +12,12 @@ export function CreateEvent() {
     const [isOutdoor, setIsOutdoor] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const onSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setError(null);
+
+    };
+
     return (
         <form onSubmit = {onSubmit} >
             <label htmlFor="title">Tittel</label>
@@ -38,7 +44,7 @@ export function CreateEvent() {
                 onChange={(e) => setDate(e.target.value)}
             />
 
-            <label htmlFor="time">Tid</label>¨
+            <label htmlFor="time">Tid</label>
              <input
                 id="time"
                 type="time"
@@ -61,10 +67,10 @@ export function CreateEvent() {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
             >
-                // Kan legge til flere kategorier her om dere ønsker btw
+            {/* Kan legge til flere kategorier her om dere ønsker btw */}
                 <option value="">Velg en kategori</option>
-                <option value="study">Sosialt</option>
-                <option value="social">Akademisk</option>
+                <option value="social">Sosialt</option>
+                <option value="study">Akademisk</option>
                 <option value="sports">Sport</option>
                 <option value="other">Annet</option>        
             </select>

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { BaseService } from "../base-service";
-import type { Event } from "@/db/schema";
+import type { Event } from "@/db/schema/schema";
 import { eventSchema, type CreateEventInput } from "./events-validation";
 import { eventRepository } from "./events-repository";
 

@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db, type DB } from "@/db";
-import { events, type Event, type CreateEvent } from "@/db/schema";
+import { events, type Event, type CreateEvent }  from "@/db/schema/schema";
 
 
 import type { BaseRepository } from "../base-repository";
