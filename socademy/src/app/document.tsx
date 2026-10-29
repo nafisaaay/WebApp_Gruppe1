@@ -19,6 +19,8 @@ export const Document: React.FC<{ children: React.ReactNode }> = ({
         href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=optional"
         precedence="first"
       />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" />
       <link rel="modulepreload" href="/src/client.tsx" />
       <link rel="stylesheet" href={styles} />
     </head>

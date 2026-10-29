@@ -44,15 +44,29 @@ export function RegisterForm() {
         } 
     }
 
-    return (
-        <form onSubmit={onSubmit}>
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Navn.." required />
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-post (@hiof.no).." required />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Passord (minst 8 tegn)..." required />
-            <button type="submit" disabled={isPending}>
+        return (
+        <form onSubmit={onSubmit} className="mt-8 flex flex-col gap-5">
+            <label className="block">
+                <span className="label">Navn</span>
+                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Kari Nordmann" autoComplete="name" className="field h-14 text-base" required />
+            </label>
+            <label className="block">
+                <span className="label">E-post</span>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="navn@hiof.no" autoComplete="email" className="field h-14 text-base" required />
+            </label>
+            <label className="block">
+                <span className="label">Passord</span>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Minst 8 tegn" autoComplete="new-password" className="field h-14 text-base" required />
+            </label>
+
+            <button
+                type="submit"
+                disabled={isPending}
+                className="mt-3 flex h-14 w-full items-center justify-center rounded-xl bg-ink text-base font-semibold text-white shadow-md transition hover:bg-ink/90 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+            >
                 {isPending ? "Registrerer..." : "Registrer"}
             </button>
-            {error && <p role="alert">{error}</p>}
+            {error && <p role="alert" className="error-text">{error}</p>}
         </form>
     );
 }

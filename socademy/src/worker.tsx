@@ -3,8 +3,9 @@ import { defineApp } from "rwsdk/worker";
 import { postRoutes } from "./features/post/post-routes";
 import { Document } from "@/app/document";
 import { setCommonHeaders } from "@/app/headers";
-import { Home } from "@/app/pages/home";
+import { Home } from "./app/pages/home";
 import { ForumPage } from "./app/pages/ForumPage";
+import { UnderConstruction } from "./app/pages/UnderConstruction";
 import { userController } from "./features/user/user-controller";
 import { auth } from "./features/auth/auth";
 import { sessionMiddleware  } from "./features/auth/middleware/session";
@@ -38,6 +39,8 @@ export default defineApp([
         layout(AppLayout, [
             route("/", [requireUserPage, Home]),
             route("/forum", [requireUserPage, ForumPage]),
+            route("/innstillinger", [requireUserPage, () => <UnderConstruction title="Innstillinger" active="innstillinger"/>]),
+            route("/myPage", [requireUserPage, () => <UnderConstruction title="Min side"/>]),
         ]),
         // Åpne sider
         route("/login", Login),
