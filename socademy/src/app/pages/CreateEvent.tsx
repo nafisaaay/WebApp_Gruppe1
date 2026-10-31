@@ -1,8 +1,19 @@
 "use client";
-import { useState, type SubmitEvent } from "react";
+import { useRef, useState, type MouseEvent, type SubmitEvent } from "react";
+import { X } from "lucide-react";
+
+
+
 
 export function CreateEvent() {
-    const [isOpen, setIsOpen] = useState(false);
+    const dialogRef = useRef<HTMLDialogElement>(null);
+    const open = () => dialogRef.current?.showModal();
+    const close = () => dialogRef.current?.close();
+    const onDialogClick = (event: MouseEvent<HTMLDialogElement>) => {
+        if (event.target === dialogRef.current) close();
+    };
+
+
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
@@ -16,10 +27,47 @@ export function CreateEvent() {
         event.preventDefault();
         setError(null);
 
+
+        const res = await fetch ("/api/v1/events", {
+            method: "POST",
+            headers: { "Content-Type": "application/json"},
+            body: JSON.stringify({
+                title,
+                description,
+                location,
+                startsAt: `${date}T${time}`
+            }),
+        });
+        
+        const result = (await res.json()) as { ok: boolean; error: { message: string } };
+
+        if (!result.ok) {
+            setError(result.error.message);
+            return;
+        }
+
+        window.location.reload();
+
     };
 
     return (
-        <form onSubmit = {onSubmit} >
+        <>
+        <button type= "button" onClick={open} className="btn-pill">
+            + Nytt event
+            </button>
+
+        <dialog
+             ref={dialogRef}
+             onClick = {onDialogClick}
+             className="m-auto w-[calc(100%-2rem)] max-w-lg rounded-3xl bg-surface p-0 text-ink shadow-2xl backdrop:bg-ink/40 backdrop:backdrop-blur-sm"
+        >
+            <div className ="relative p-6 sm:p-8">
+                <button type="button" onClick={close} aria-label="Lukk" className="icon-btn absolute top-4 right-4">
+                    <X className="size-5" aria-hidden />
+                </button>
+
+        
+            <form onSubmit = {onSubmit}>
             <label htmlFor="title">Tittel</label>
             <input
                 id="title"
@@ -92,6 +140,10 @@ export function CreateEvent() {
                 >
                 Lagre
             </button>
+            {error ? <p role="alert" className="error-text">{error}</p> : null}
         </form>
+            </div>
+        </dialog>
+        </>
     );
 }

@@ -30,6 +30,7 @@ export function MonthGrid({ year, month, today = new Date(), events = [] }: Mont
     const monthName = new Date(year, month).toLocaleDateString("nb-NO", {
         month: "long",
         year: "numeric",
+
     });
 
     return (
