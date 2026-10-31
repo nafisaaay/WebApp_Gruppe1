@@ -9,9 +9,13 @@ export const events = sqliteTable("events", {
     location: text(),
     startsAt: int({ mode: "timestamp" }).notNull(),
     endsAt: int({ mode: "timestamp" }),
+    createdBy: text("created_by")
+        .notNull()
+        .references(() => user.id, {onDelete: "cascade"}),
     createdAt: int({ mode: "timestamp" }).notNull().$defaultFn(() => new Date()),
 })
-
+    export type Event = typeof events.$inferSelect;
+    export type CreateEvent = typeof events.$inferInsert;
 
 // -------------- USERS -----------------
 export const user = sqliteTable("users", {
