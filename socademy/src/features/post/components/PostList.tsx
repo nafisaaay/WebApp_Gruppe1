@@ -1,9 +1,10 @@
-import { DB } from "@/db"; 
 import { postService } from "../post-service";
 import { PostCard } from "./PostCard";
+import { requestInfo } from "rwsdk/worker";
 
 export async function PostList() {
-  const result = await postService.getAll();
+  const { ctx } = requestInfo;
+  const result = await postService.getAll({}, ctx.session.userId ?? undefined);
 
   if (!result.ok) {
     return (

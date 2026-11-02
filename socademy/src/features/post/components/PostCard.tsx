@@ -6,6 +6,7 @@ import { Avatar } from "@/app/components/Avatar";
 import type { PostDTO } from "../post-mapper";
 import { DeletePostButton, EditPostForm } from "./PostActions";
 import { useUser } from "@/features/user/components/UserProvider";
+import { LikeButton } from "@/features/likes/components/likeButton";
 
 // Denne er for å vise en popo-up versjon av innleggene for å gi det en finere effekt.
 export function PostCard({ post }: { post: PostDTO }) {
@@ -71,6 +72,9 @@ export function PostCard({ post }: { post: PostDTO }) {
             <>
               <h2 id={titleId} className="mt-6 text-2xl font-bold tracking-tight">{post.title}</h2>
               <p className="mt-3 text-[17px] leading-relaxed whitespace-pre-line">{post.text}</p>
+              <div className="mt-4">
+                <LikeButton post={post} />
+                </div>
 
               {isOwner ? (
                 <div className="mt-6 flex gap-3 border-t border-line pt-4">

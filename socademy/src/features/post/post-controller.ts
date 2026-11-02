@@ -85,16 +85,13 @@ export function createPostController (_service : PostService): PostController{
        
     },
 
-   async get({params}: RequestInfo){ 
-    const id = parseId(params.id);
-    if (id === null) return invalidIdResponse();
-    const result = await _service.get(id);
-    return result.ok
-    ? Response.json(result, {
-        status: 200
-    }) 
-    : Response.json(result, {
-        status: Number(result.error.code),
+    async get({ params, ctx }: RequestInfo) {
+         const id = parseId(params.id);
+         if (id === null) return invalidIdResponse();
+          const result = await _service.getAll(params, ctx.session.userId ?? undefined);
+          return result.ok ? Response.json(result, {
+             status: 200
+            }) : Response.json(result, { status: Number(result.error.code),
     }) 
    },
    async remove({ params, ctx }: RequestInfo) {
