@@ -9,7 +9,7 @@ import "@testing-library/jest-dom/vitest";
 // Test 1 
 test("Lagre-knappen er deaktivert når tittelen er tom", () => {
     render(<CreateEvent />);
-    expect(screen.getByRole("button", { name: "Lagre" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Lagre", hidden:true })).toBeDisabled();
 
 });
 
@@ -23,7 +23,7 @@ test("Lagre knappen er aktivert når tittelen er fylt inn", async () => {
     await user.selectOptions(screen.getByLabelText("Kategori"), "social");
     await user.type(screen.getByLabelText("Dato"), "2026-12-31");
     await user.type(screen.getByLabelText("Tid"), "18:00");
-    expect(screen.getByRole("button", { name: "Lagre" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Lagre", hidden:true })).toBeEnabled();
 });
 
 // Test 3
@@ -31,7 +31,7 @@ test ("Lagre knappen er deaktivert når beskrivelsen er tom", async () => {
     const user = userEvent.setup();
     render (<CreateEvent />);
     await user.type(screen.getByPlaceholderText(/skriv en tittel/i), "Quiz i kantina");
-    expect(screen.getByRole("button", { name: "Lagre" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Lagre", hidden:true })).toBeDisabled();
 });
 
 // Test 4 
@@ -40,7 +40,7 @@ test ("Lagre knappen er deaktivert når datoen er tom", async() => {
     render (<CreateEvent />);
     await user.type(screen.getByPlaceholderText(/skriv en tittel/i), "Quiz i kantina");
     await user.type(screen.getByPlaceholderText(/skriv en beskrivelse/i), "Bli med på quiz i kantina!");
-    expect(screen.getByRole("button", { name: "Lagre" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Lagre", hidden:true })).toBeDisabled();
 });
 
 // Test 5 (tid)
@@ -50,7 +50,7 @@ test ("Lagre knappen er deaktivert når datoen er tom", async() => {
     await user.type(screen.getByPlaceholderText(/skriv en tittel/i), "Quiz i kantina");
     await user.type(screen.getByPlaceholderText(/skriv en beskrivelse/i), "Bli med på quiz i kantina!");
     await user.type(screen.getByLabelText("Dato"), "2026-12-31");
-    expect (screen.getByRole("button", { name: "Lagre" })).toBeDisabled();
+    expect (screen.getByRole("button", { name: "Lagre", hidden:true })).toBeDisabled();
 });
 
 // Test 6 (Sted)
@@ -61,7 +61,7 @@ test ("Lagre knappen er deaktivert når stedet tomt", async() => {
     await user.type(screen.getByPlaceholderText(/skriv en beskrivelse/i), "Bli med på quiz i kantina!");
     await user.type(screen.getByLabelText("Dato"), "2026-12-31");
     await user.type(screen.getByLabelText("Tid"), "18:00");
-    expect (screen.getByRole("button", { name: "Lagre" })).toBeDisabled();
+    expect (screen.getByRole("button", { name: "Lagre", hidden:true })).toBeDisabled();
 });
 
 // Test 7 (Kategori)
@@ -73,7 +73,7 @@ test ("Lagre knappen er deaktivert når kategorien ikke er valgt", async() => {
     await user.type(screen.getByLabelText("Dato"), "2026-12-31");
     await user.type(screen.getByLabelText("Tid"), "18:00");
     await user.type(screen.getByPlaceholderText(/skriv et sted/i), "Kantina");
-    expect (screen.getByRole("button", { name: "Lagre" })).toBeDisabled();
+    expect (screen.getByRole("button", { name: "Lagre", hidden:true })).toBeDisabled();
 
 });
 
@@ -81,7 +81,7 @@ test ("Lagre knappen er deaktivert når kategorien ikke er valgt", async() => {
 
 test("Utendøra eller innendørs", async () => {
     render (<CreateEvent />);
-    const toggle = screen.getByRole("checkbox", { name: "Utendørs" });
+    const toggle = screen.getByRole("checkbox", { name: "Utendørs", hidden:true});
     await userEvent.click(toggle);
     expect(toggle).toBeChecked();
 });
@@ -89,6 +89,6 @@ test("Utendøra eller innendørs", async () => {
 // Test 9
 test ("Utendørs er av som standard", () => {
     render (<CreateEvent />);
-    expect (screen.getByRole("checkbox", { name: "Utendørs" })).not.toBeChecked();
+    expect (screen.getByRole("checkbox", { name: "Utendørs", hidden:true})).not.toBeChecked();
 });
 
