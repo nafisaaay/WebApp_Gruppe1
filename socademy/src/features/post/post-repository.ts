@@ -26,7 +26,6 @@ const toPostWithAuthor = (row: { post: Post; author: { id: string; name: string 
 });
 
 export function createPostRepository(db: DB): PostRepository {
-  // 
   const findById = async (id: number) => {
     const row = await selectWithAuthor(db).where(eq(posts.id, id)).get();
     return row ? toPostWithAuthor(row) : null;
