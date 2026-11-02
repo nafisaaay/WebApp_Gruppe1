@@ -5,6 +5,7 @@ import { Calendar } from "@/features/calendar/Calendar";
 import { parseYearMonth } from "@/features/calendar/calendarUtils";
 import { eventsService } from "@/features/events/events-service";
 import type { RequestInfo } from "rwsdk/worker";
+import { UpcomingEvents } from "../components/UpcomingEvents";
 
 
 // Forsiden. Innlogget bruker kommer fra AppLayout (UserProvider), så klientkomponenter
@@ -14,6 +15,7 @@ export async function Home({ request }: RequestInfo) {
   // Leser ?year=..&month.. fra URL-en. Mangler disse, vises dagens måned.
   const url = new URL(request.url);
   const { year, month } = parseYearMonth(url.searchParams, new Date());
+  const selectedDate = url.searchParams.get("date");
 
   const results = await eventsService.getAll();
   const events = results.ok ? results.data : [];
@@ -27,10 +29,19 @@ export async function Home({ request }: RequestInfo) {
           <div className="flex justify-end">
             <CreateEvent />
           </div>
-          <Calendar year={year} month={month} events={events}/>
-          {/* UpcomingEvents kommer her når den er klar */}
-
+          <Calendar year={year} month={month} events={events} selectedDate={selectedDate} />
         </main>
+
+        <aside className="lg:w-72">
+          <section className="card mt-6 p-5">
+          <h2 className="mb-3 text-xl font-semibold">
+              {selectedDate
+                ? new Date(selectedDate).toLocaleDateString("nb-NO", { day: "numeric", month: "long" })
+                : "Kommende hendelser"}
+            </h2>
+            <UpcomingEvents events={events} selectedDate = {selectedDate} />
+          </section>
+        </aside>
       </div>
     </>
   );

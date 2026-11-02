@@ -18,11 +18,12 @@ interface MonthGridProps {
     month: number; // 0-11
     today?: Date; // kan sendes inn i tester, ellers brukes dagens dato
     events?: Event[];
+    selectedDate?: string | null;
 }
 
 
 // Tegner rutenettet for en måned som en HTML-tabell.
-export function MonthGrid({ year, month, today = new Date(), events = [] }: MonthGridProps) {
+export function MonthGrid({ year, month, today = new Date(), events = [], selectedDate = null }: MonthGridProps) {
     const grid = getMonthGrid(year, month);
     const todayKey = toDateKey(today);
 
@@ -56,7 +57,9 @@ export function MonthGrid({ year, month, today = new Date(), events = [] }: Mont
                         {week.map((day) => {
                             const key = toDateKey(day);
                             const isToday = key === todayKey;
+                            const isSelected = key === selectedDate;
                             const isOtherMonth = day.getMonth() !== month;
+
 
                             const dayEvents = events.filter(
                                 (event) => toDateKey(event.startsAt) === key
@@ -64,20 +67,24 @@ export function MonthGrid({ year, month, today = new Date(), events = [] }: Mont
 
                             return (
                                 <td key={key} className="p-1">
-                                    <time
-                                        dateTime={key}
+                                    <a
+                                        href={`/?year=${day.getFullYear()}&month=${day.getMonth() + 1}&date=${key}`}
                                         aria-current={isToday ? "date" : undefined}
                                         // Dager fra forrige/neste måned vises i grått, i dag får blå ramme
-                                        className={`mx-auto flex h-14 max-w-21 items-center justify-center rounded-xl border text-base
+                                        className={`mx-auto flex h-14 max-w-21 items-center justify-center rounded-xl border text-base hover:bg-line/40
                                             ${isToday ? "border-accent font-semibold text-accent" : "border-transparent"}
+                                            ${isSelected ? "bg-accent text-white" : ""}
                                             ${isOtherMonth ? "text-faint" : ""}`}
-                                     >
-                                        {day.getDate()}
-                                    </time>
+                                    >
+                                        <time dateTime={key}>{day.getDate()}</time>
+                                    </a>
 
-                                    {dayEvents.map((event) => (
-                                        <p key={event.id} className="truncate text-xs">{event.title}</p>
-                                    ))}
+                                    {dayEvents.length > 0 ? (
+                                        <span
+                                            className="mx-auto mt-1 block size-1.5 rounded-full bg-accent"
+                                            aria-label={`${dayEvents.length} event(er)`}
+                                        />
+                                    ) : null}
                                 </td>
                             );
                         })}

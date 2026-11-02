@@ -65,9 +65,13 @@ export function MonthGrid({ year, month, events }: MonthGridProps) {
                                     {day.getDate()}
 
 
-                                    {dayEvents.map((event) => (
-                                        <p key={event.id} className="text-xs">{event.title}</p>
-                                    ))}
+                                {/* En prikk hvis det finnes events denne dagen */}
+                                    {dayEvents.length > 0 ? (
+                                        <span
+                                            className="mx-auto mt-1 block size-1.5 rounded-full bg-red-500"
+                                            aria-label={`${dayEvents.length} event(er)`}
+                                        />
+                                    ) : null}
                                 </td>
                             );
                         })}

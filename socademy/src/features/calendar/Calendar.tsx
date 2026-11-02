@@ -14,9 +14,9 @@ import { addMonths, monthHref, type YearMonth } from "./calendarUtils";
  * year/month som props. Da kan Calendar gjenbrukes og testes enkelt.
  */
 
-type CalendarProps = YearMonth & { events: Event[] };
-
-export function Calendar( { year, month,events }: CalendarProps) {
+type CalendarProps = YearMonth & { events: Event[]; selectedDate: string | null };
+    
+export function Calendar({ year, month, events, selectedDate }: CalendarProps) {
     const prev = addMonths({ year, month }, -1);
     const next = addMonths({ year, month }, 1);
 
@@ -45,7 +45,7 @@ export function Calendar( { year, month,events }: CalendarProps) {
                     </a>
                 </nav>
             </div>
-            <MonthGrid year={year} month={month} events = {events}/>
+            <MonthGrid year={year} month={month} events={events} selectedDate={selectedDate} />
         </section>
     );
 }
