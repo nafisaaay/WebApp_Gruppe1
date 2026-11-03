@@ -75,7 +75,7 @@ export function createPostService(_repository : PostRepository): PostService{
                 data: toPostDTO(result.data),
             }
         },
-        async remove(id){
+        async remove(id, userId){
             const postExists = await getPost(id);
             if(!postExists.ok) return postExists;
             if(!postExists.data){
@@ -88,6 +88,16 @@ export function createPostService(_repository : PostRepository): PostService{
                     }
                 }
             }
+            if (postExists.data.userId !== userId) {
+            return {
+                 ok: false,
+                 error: { 
+                    code: 403, 
+                    message: "you can only delete your own posts", 
+                    fieldErrors: {} 
+                },
+            };
+        }
             const result = await _repository.remove(id);
             if(!result.ok) return result;
 
