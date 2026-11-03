@@ -1,5 +1,6 @@
 import { z } from "zod";
-import type { BaseService } from "../base-service";
+import type { BaseService } from "@/shared/base-service";
+import { Errors } from "@/shared/results";
 import type { Event } from "@/db/schema/schema";
 import { eventSchema, type CreateEventInput } from "./events-validation";
 import { eventRepository } from "./events-repository";
@@ -68,5 +69,7 @@ export const eventsService: BaseService<Event, undefined, number> = {
 
     return await eventRepository.remove(id, userId);        
   },
+
+  update: async () => ({ ok: false, error: Errors.notSupported}),
 };
 
