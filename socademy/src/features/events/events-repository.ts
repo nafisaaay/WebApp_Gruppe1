@@ -1,9 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db, type DB } from "@/db";
 import { events, type Event, type CreateEvent }  from "@/db/schema/schema";
-
-
-import type { BaseRepository } from "../base-repository";
+import type { BaseRepository } from "@/shared/base-repository";
 
 export interface EventRepository
   extends BaseRepository<Event, CreateEvent, Partial<CreateEvent>, undefined> {}

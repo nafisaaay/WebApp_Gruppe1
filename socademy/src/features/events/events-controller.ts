@@ -1,23 +1,28 @@
-import { BaseController } from "@/shared/base-controller";
+import { fail, type BaseController } from "@/shared/base-controller";
+import { Errors } from "@/shared/results";
 import { eventsService } from "./events-service";
 
 export const eventsController: BaseController = {
-// Opprette et event
-  create: async (requestInfo) => {
-    const userId = requestInfo.ctx.session.userId;
-    const input = await requestInfo.request.json();
 
-  if (!userId) {
-  return Response.json(
-    { ok: false, error: { code: 401, message: "Du må være innlogget" } },
-    { status: 401 },
-  );
-}
-const result = await eventsService.create(input, userId);
-    return Response.json(result, {
-      status: result.ok ? 201 : result.error.code,
-    });
-},
+  // Opprette et event
+  create: async (requestInfo) => {
+
+    // 1. Er du logget inn? ellers 401, før vi rører body-en
+    const userId = requestInfo.ctx.session.userId;
+    if (!userId) return fail(Errors.unauthorized);
+
+    // 2. Er body-en gyldig JSON? ellers 400 i stedet for krasj (500)
+    let input: unknown;
+    try {
+      input = await requestInfo.request.json();
+    } catch {
+      return fail({ ...Errors.badRequest, message: "Body må være JSON" });
+    }
+
+    // 3. Servicen sjekker innholdet med Zod (400) og lagrer (201)
+    const result = await eventsService.create(input, userId);
+    return Response.json(result, { status: result.ok ? 201 : result.error.code });
+  },
 
   // Hente kun en event
   get: async (requestInfo) => {
@@ -32,14 +37,14 @@ const result = await eventsService.create(input, userId);
 
  // Hente alle events
   getAll: async (requestInfo) => {
-  const result = await eventsService.getAll();
+    const result = await eventsService.getAll();
 
-  return Response.json(result, {
-    status: result.ok ? 200 : result.error.code,
-  });
-},
+    return Response.json(result, {
+      status: result.ok ? 200 : result.error.code,
+    });
+  },
 
-// Slette et event
+  // Slette et event
   remove: async (requestInfo) => {
     const userId = requestInfo.ctx.session.userId;
     if (!userId) {
@@ -55,11 +60,7 @@ const result = await eventsService.create(input, userId);
     });
   },
 
-
-// Endre event
-
-  update: async (requestInfo) => {
-    return Response.json({ message: "Endre et event" });
-  },
+  // Endre event
+  update: async () => fail(Errors.notSupported),
 };
 
