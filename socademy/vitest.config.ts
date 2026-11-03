@@ -30,7 +30,7 @@ export default defineConfig({
     environment: "node",
     setupFiles: ["./src/test/setup-dom.ts"],
     include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
-    exclude: ["node_modules", "dist", ".wrangler"],
+    exclude: ["node_modules", "dist", ".wrangler","e2e/**"],
     coverage: {
       provider: "v8",
       reporter: ["text", "html"],
