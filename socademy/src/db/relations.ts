@@ -11,5 +11,18 @@ export const relations = defineRelations(schema, (r) => ({
             to: r.user.id,
             optional: false, // sier ifra til drizzle at en post ALLTID har en author.
         }),
-    }
-}));
+        likes: r.many.likes(),
+    },
+     likes: {
+        user: r.one.user({
+            from: r.likes.userId,
+            to: r.user.id,
+            optional: false,
+        }),
+        post: r.one.posts({
+            from: r.likes.postId,
+            to: r.posts.id,
+            optional: false,
+        }),
+
+}}));

@@ -12,7 +12,7 @@ export function createPostService(_repository : PostRepository): PostService{
     const getPost = (id:number) => _repository.get(id);
 
     return{
-        async getAll(params = {}){
+        async getAll(params = {}, userId){
             const paramsValidateResult = validatePostParams(params);
             if(!paramsValidateResult.ok){
                 return{
@@ -27,7 +27,7 @@ export function createPostService(_repository : PostRepository): PostService{
                     
                 }
             }
-            const result = await _repository.getAll(paramsValidateResult.params)
+            const result = await _repository.getAll(paramsValidateResult.params, userId)
             if(!result.ok){
                 return result;
             }
@@ -57,8 +57,8 @@ export function createPostService(_repository : PostRepository): PostService{
             };
         
         },
-        async get(id){
-            const result = await _repository.get(id);
+        async get(id, userId){
+            const result = await _repository.get(id, userId);
             if(!result.ok) return result;
             if(!result.data){
                 return{

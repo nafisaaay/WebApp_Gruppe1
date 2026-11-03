@@ -1,5 +1,5 @@
-import { desc, eq, or, like } from "drizzle-orm";
-import { posts, user, type CreatePost, type UpdatePost, type Post } from "@/db/schema/schema";
+import { desc, eq, or, like, sql } from "drizzle-orm";
+import { posts, user, type CreatePost, type UpdatePost, type Post, likes } from "@/db/schema/schema";
 import type { BaseRepository } from "../../shared/base-repository";
 import { db, type DB } from "@/db";
 import { LIST_LIMIT_MAX, PostListParams } from "./utils/validate-post-params";
@@ -15,29 +15,37 @@ const dbError = (error: unknown) => {
   };
 };
 
-const selectWithAuthor = (db: DB) => db
-    .select({ post: posts, author: { id: user.id, name: user.name } })
+const selectWithAuthor = (db: DB, viewerId?: string | null) => db
+    .select({ post: posts, author: { id: user.id, name: user.name }, 
+    likeCount: sql<number>`(select count(*) from ${likes} where ${likes.postId} = ${posts.id})`.mapWith(Number),
+    likedByMe: sql<boolean>`exists(select 1 from ${likes} where ${likes.postId} = ${posts.id} and ${likes.userId} = ${viewerId ?? ""})`.mapWith(Boolean),})
     .from(posts)
     .innerJoin(user, eq(posts.userId, user.id));
 
-const toPostWithAuthor = (row: { post: Post; author: { id: string; name: string }; }): PostWithAuthor => ({
+const toPostWithAuthor = (row: {
+  post: Post;
+  author: { id: string; name: string };
+  likeCount: number;
+  likedByMe: boolean;
+}): PostWithAuthor => ({
   ...row.post,
   author: row.author,
+  likeCount: row.likeCount,
+  likedByMe: row.likedByMe,
 });
 
 export function createPostRepository(db: DB): PostRepository {
-  // 
-  const findById = async (id: number) => {
-    const row = await selectWithAuthor(db).where(eq(posts.id, id)).get();
-    return row ? toPostWithAuthor(row) : null;
-  };
+ const findById = async (id: number, viewerId?: string) => {
+  const row = await selectWithAuthor(db, viewerId).where(eq(posts.id, id)).get();
+  return row ? toPostWithAuthor(row) : null;
+};
 
 
   return {
-    async getAll(params = {}) {
+    async getAll(params = {}, userId) {
       try {
         const search = params.q ? `%${params.q}%` : undefined;
-        const rows = await selectWithAuthor(db)
+        const rows = await selectWithAuthor(db, userId)
           .where(search ? or(like(posts.title, search), like(posts.text, search)) : undefined)
           .orderBy(desc(posts.createdAt))
           .limit(params.limit ?? LIST_LIMIT_MAX)
@@ -48,22 +56,22 @@ export function createPostRepository(db: DB): PostRepository {
       }
     },
 
-    async create(data) {
-      try {
-        const createdPost = await db
-            .insert(posts)
-            .values(data)
-            .returning()
-            .get();
-        return { ok: true, data: (await findById(createdPost.id))! };
-      } catch (error) {
-        return dbError(error);
-      }
-    },
+   async create(data) {
+  try {
+    const createdPost = await db
+      .insert(posts)
+      .values(data)
+      .returning()
+      .get();
+    return { ok: true, data: (await findById(createdPost.id, data.userId))! };
+  } catch (error) {
+    return dbError(error);
+  }
+},
 
-    async get(id) {
+    async get(id, userId) {
       try {
-        return { ok: true, data: await findById(Number(id)) };
+        return { ok: true, data: await findById(Number(id),userId) };
       } catch (error) {
         return dbError(error);
       }
@@ -80,7 +88,7 @@ export function createPostRepository(db: DB): PostRepository {
         return dbError(error);
       }
     },
-    async update(id, data){
+    async update(id, data, userId,){
       try{ 
         await db
           .update(posts)
@@ -88,7 +96,7 @@ export function createPostRepository(db: DB): PostRepository {
           .where(eq(posts.id, Number(id)))
           .returning()
           .get();
-        return({ ok:true, data: await findById(Number(id)) })
+        return({ ok:true, data: await findById(Number(id),userId) })
       }
       catch(error){
         return dbError(error)
