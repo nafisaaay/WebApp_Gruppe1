@@ -17,6 +17,17 @@ export function PostForm() {
   const [error, setError] = useState<null | string>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
+
+
+// event-delen
+const [isEvent, setIsEvent] = useState(false); 
+const [startsAt, setStartsAt] = useState("");
+const [location, setLocation] = useState("");
+
+
+
+
+
   const onSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus("loading");
@@ -29,6 +40,27 @@ export function PostForm() {
       setError(result.error.message);
       setFieldErrors(result.error.fieldErrors ?? {});
       return;
+    }
+
+        // Hvis "Event" er krysset av, lag også et event i kalenderen
+    if (isEvent) {
+      const res = await fetch("/api/v1/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: data.title,
+          description: data.text,
+          startsAt,
+          location,
+        }),
+      });
+      const eventResult = (await res.json()) as { ok: boolean; error: { message: string } };
+
+      if (!eventResult.ok) {
+        setStatus("error");
+        setError(eventResult.error.message);
+        return;
+      }
     }
 
     window.location.reload();
@@ -75,6 +107,35 @@ export function PostForm() {
             aria-invalid={fieldErrors.text ? true : undefined}
           />
           {fieldErrors.text ? <p className="error-text">{fieldErrors.text[0]}</p> : null}
+
+          
+          {/* Event-toggle */}
+          <label className="mt-2 flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={isEvent}
+              onChange={(e) => setIsEvent(e.target.checked)}
+              disabled={isLoading}
+            />
+            Event
+          </label>
+
+          {/* Vises bare når "Event" er krysset av */}
+          {isEvent && (
+            <div className="mt-2 flex flex-col gap-2 text-sm">
+              <label>
+                Dato og tid{" "}
+                <input type="datetime-local" value={startsAt} onChange={(e) => setStartsAt(e.target.value)} disabled={isLoading} />
+              </label>
+              <label>
+                Sted{" "}
+                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} disabled={isLoading} />
+              </label>
+            </div>
+          )}
+
+
+
         </div>
       </div>
 
