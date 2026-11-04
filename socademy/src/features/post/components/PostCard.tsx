@@ -91,14 +91,11 @@ export function PostCard({ post }: { post: PostDTO }) {
               </div>
 
               {isOwner ? (
-                <div className="mt-6 flex gap-3 border-t border-line pt-4">
+                <div className="mt-6 flex justify-end gap-3 border-t border-line pt-4">
                   <button
                     type="button"
                     onClick={() => setIsEditing(true)}
-                    className="btn-pill hover:border-primary hover:bg-primary hover:text-white"
-                  >
-                    Rediger
-                  </button>
+                    className="btn-pill hover:border-primary hover:bg-primary hover:text-white">Rediger</button>
                   <DeletePostButton post={post} />
                 </div>
               ) : null}

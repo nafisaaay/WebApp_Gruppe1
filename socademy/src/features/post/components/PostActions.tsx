@@ -4,13 +4,7 @@ import { updatePost, removePost } from "../post-api";
 import type { PostDTO } from "../post-mapper";
 import type { UpdatePostInput } from "../utils/post-schema";
 
-export function EditPostForm({
-  post,
-  onCancel,
-}: {
-  post: PostDTO;
-  onCancel: () => void;
-}) {
+export function EditPostForm({post,onCancel,}: {post: PostDTO; onCancel: () => void;}) {
   const [data, setData] = useState<UpdatePostInput>({
     title: post.title,
     text: post.text,
