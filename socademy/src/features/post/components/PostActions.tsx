@@ -4,9 +4,20 @@ import { updatePost, removePost } from "../post-api";
 import type { PostDTO } from "../post-mapper";
 import type { UpdatePostInput } from "../utils/post-schema";
 
-export function EditPostForm({ post, onCancel }: { post: PostDTO; onCancel: () => void }) {
-  const [data, setData] = useState<UpdatePostInput>({ title: post.title, text: post.text });
-  const [status, setStatus] = useState<"loading" | "error" | "idle" | "success">("idle");
+export function EditPostForm({
+  post,
+  onCancel,
+}: {
+  post: PostDTO;
+  onCancel: () => void;
+}) {
+  const [data, setData] = useState<UpdatePostInput>({
+    title: post.title,
+    text: post.text,
+  });
+  const [status, setStatus] = useState<
+    "loading" | "error" | "idle" | "success"
+  >("idle");
   const [error, setError] = useState<null | string>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
@@ -28,7 +39,9 @@ export function EditPostForm({ post, onCancel }: { post: PostDTO; onCancel: () =
     window.location.reload();
   };
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = event.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
@@ -46,7 +59,9 @@ export function EditPostForm({ post, onCancel }: { post: PostDTO; onCancel: () =
         aria-invalid={fieldErrors.title ? true : undefined}
         className="w-full bg-transparent py-2 text-lg font-semibold outline-none disabled:opacity-60"
       />
-      {fieldErrors.title ? <p className="error-text">{fieldErrors.title[0]}</p> : null}
+      {fieldErrors.title ? (
+        <p className="error-text">{fieldErrors.title[0]}</p>
+      ) : null}
 
       <textarea
         name="text"
@@ -58,12 +73,31 @@ export function EditPostForm({ post, onCancel }: { post: PostDTO; onCancel: () =
         aria-invalid={fieldErrors.text ? true : undefined}
         className="w-full resize-none bg-transparent leading-relaxed outline-none disabled:opacity-60"
       />
-      {fieldErrors.text ? <p className="error-text">{fieldErrors.text[0]}</p> : null}
+      {fieldErrors.text ? (
+        <p className="error-text">{fieldErrors.text[0]}</p>
+      ) : null}
 
-        <div className="flex items-center justify-end gap-3">
-            {status === "error" ? <p role="alert" className="error-text mr-auto">{error}</p> : null}
-            <button type="button" onClick={onCancel} disabled={isLoading} className="text-sm text-muted">Avbryt</button>
-            <button type="submit" disabled={isLoading} className="btn-primary px-6 py-2.5">{isLoading ? "Lagrer..." : "Lagre"}</button>
+      <div className="flex items-center justify-end gap-3">
+        {status === "error" ? (
+          <p role="alert" className="error-text mr-auto">
+            {error}
+          </p>
+        ) : null}
+        <button
+          type="button"
+          onClick={onCancel}
+          disabled={isLoading}
+          className="text-sm text-muted"
+        >
+          Avbryt
+        </button>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="btn-primary px-6 py-2.5"
+        >
+          {isLoading ? "Lagrer..." : "Lagre"}
+        </button>
       </div>
     </form>
   );
@@ -89,10 +123,19 @@ export function DeletePostButton({ post }: { post: PostDTO }) {
 
   return (
     <>
-      <button type="button" onClick={onClick} disabled={isLoading}>
+      <button
+        type="button"
+        onClick={onClick}
+        disabled={isLoading}
+        className="inline-flex items-center gap-1.5 rounded-full border border-danger/30 bg-surface px-3.5 py-1.5 text-sm text-danger transition hover:border-danger hover:bg-danger hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+      >
         {isLoading ? "Sletter..." : "Slett"}
       </button>
-      {error ? <p role="alert" className="error-text">{error}</p> : null}
+      {error ? (
+        <p role="alert" className="error-text">
+          {error}
+        </p>
+      ) : null}
     </>
   );
 }
