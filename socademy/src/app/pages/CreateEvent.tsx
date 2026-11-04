@@ -10,7 +10,7 @@ import {
   X,
 } from "lucide-react";
 
-const CATEGORIES = [
+export const CATEGORIES = [
   {
     value: "social",
     label: "Sosialt",

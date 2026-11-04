@@ -4,6 +4,8 @@ import { createPost } from "../post-api";
 import { Avatar } from "@/app/components/Avatar";
 import { useUser } from "@/features/user/components/UserProvider";
 import type { CreatePostInput } from "../utils/post-schema";
+import {createEvent} from "@/features/event/event-api";
+import { CATEGORIES } from "@/app/pages/CreateEvent";
 
 const initialData: CreatePostInput = {
   text: "",
@@ -31,6 +33,7 @@ export function PostForm() {
   const [isEvent, setIsEvent] = useState(false);
   const [startsAt, setStartsAt] = useState("");
   const [location, setLocation] = useState("");
+  const [category, setCategory] = useState("other");
 
   const onSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -55,7 +58,10 @@ export function PostForm() {
           title: data.title,
           description: data.text,
           startsAt,
+          category,
+          isOutdoor: false,
           location,
+          
         }),
       });
       const eventResult = (await res.json()) as {
@@ -143,7 +149,7 @@ export function PostForm() {
       {isEvent && (
         <div className="mt-4 p-4 grid animate-pop grid-cols-2 gap-4 rounded-2xl bg-canvas shadow-sm sm:grid-cols-2">
           <div className="flex flex-col">
-            <label htmlFor="event-date-time" className="label">
+            <label htmlFor="event-datetime" className="label">
               Dato og tid
             </label>
             <input
@@ -156,8 +162,7 @@ export function PostForm() {
               className="field block"
             />
           </div>
-
-          <div className="flex flex-col">
+            <div className="flex flex-col">
             <label htmlFor="event-location" className="label">
               Sted
             </label>
@@ -170,6 +175,30 @@ export function PostForm() {
               className="field block"
             />
           </div>
+
+          <fieldset className="col-span-2">
+            <legend className="label">Kategori</legend>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORIES.map((c) => (
+                <label key={c.value} className="cursor-pointer">
+                  <input
+                    type="radio"
+                    name="category"
+                    value={c.value}
+                    checked={category === c.value}
+                    onChange={(e) => setCategory(e.target.value)}
+                    disabled={isLoading}
+                    className="peer sr-only"
+                  />
+                  <span
+                    className={`flex items-center whitespace-nowrap rounded-2xl border-2 border-line bg-surface px-4 py-2 text-sm font-medium transition hover:-translate-y-0.5 hover:border-faint peer-focus-visible:ring-2 peer-focus-visible:ring-primary/40 ${c.color}`}
+                  >
+                    {c.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
         </div>
       )}
 
