@@ -10,23 +10,27 @@ const initialData: CreatePostInput = {
   title: "",
 };
 
+// Funk for å få opp nøyaktig dato/tid
+function nowDateTime() {
+  const now = new Date();
+  now.setSeconds(0, 0);
+  const localTimeDiffms = now.getTimezoneOffset() * 60_000;
+  return new Date(now.getTime() - localTimeDiffms).toISOString().slice(0, 16);
+}
+
 export function PostForm() {
   const { user } = useUser();
   const [data, setData] = useState<CreatePostInput>(initialData);
-  const [status, setStatus] = useState<"loading" | "error" | "idle" | "success">("idle");
+  const [status, setStatus] = useState<
+    "loading" | "error" | "idle" | "success"
+  >("idle");
   const [error, setError] = useState<null | string>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
-
-
-// event-delen
-const [isEvent, setIsEvent] = useState(false); 
-const [startsAt, setStartsAt] = useState("");
-const [location, setLocation] = useState("");
-
-
-
-
+  // Event-delen (er innlegget en event-checkbox)
+  const [isEvent, setIsEvent] = useState(false);
+  const [startsAt, setStartsAt] = useState("");
+  const [location, setLocation] = useState("");
 
   const onSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -42,7 +46,7 @@ const [location, setLocation] = useState("");
       return;
     }
 
-        // Hvis "Event" er krysset av, lag også et event i kalenderen
+    // Hvis "Event" er krysset av, lag også et event i kalenderen
     if (isEvent) {
       const res = await fetch("/api/v1/events", {
         method: "POST",
@@ -54,7 +58,10 @@ const [location, setLocation] = useState("");
           location,
         }),
       });
-      const eventResult = (await res.json()) as { ok: boolean; error: { message: string } };
+      const eventResult = (await res.json()) as {
+        ok: boolean;
+        error: { message: string };
+      };
 
       if (!eventResult.ok) {
         setStatus("error");
@@ -93,7 +100,9 @@ const [location, setLocation] = useState("");
             className="w-full bg-transparent py-2 text-lg font-semibold outline-none placeholder:text-muted disabled:opacity-60"
             aria-invalid={fieldErrors.title ? true : undefined}
           />
-          {fieldErrors.title ? <p className="error-text">{fieldErrors.title[0]}</p> : null}
+          {fieldErrors.title ? (
+            <p className="error-text">{fieldErrors.title[0]}</p>
+          ) : null}
 
           <textarea
             name="text"
@@ -103,47 +112,84 @@ const [location, setLocation] = useState("");
             onChange={onInputChange}
             disabled={isLoading}
             rows={3}
-            className="mt-1 w-full resize-none bg-transparent leading-relaxed outline-none placeholder:text-muted disabled:opacity-60"
+            className="mt-1 pt-4 pb-4 w-full min-h-32 border-t border-line resize-none bg-transparent leading-relaxed outline-none placeholder:text-muted disabled:opacity-60"
             aria-invalid={fieldErrors.text ? true : undefined}
           />
-          {fieldErrors.text ? <p className="error-text">{fieldErrors.text[0]}</p> : null}
+          {fieldErrors.text ? (
+            <p className="error-text">{fieldErrors.text[0]}</p>
+          ) : null}
 
-          
-          {/* Event-toggle */}
-          <label className="mt-2 flex items-center gap-2 text-sm">
+          {/* Event-checkbox */}
+          <label className="mt-3 inline-flex cursor-pointer select-none items-center gap-2 text-sm has-disabled:cursor-not-allowed has-disabled:opacity-60">
             <input
               type="checkbox"
               checked={isEvent}
-              onChange={(e) => setIsEvent(e.target.checked)}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setIsEvent(checked);
+                if (checked && !startsAt) {
+                  setStartsAt(nowDateTime());
+                }
+              }}
               disabled={isLoading}
+              className="size-4 cursor-pointer accent-primary disabled:cursor-not-allowed"
             />
-            Event
+            Event?
           </label>
-
-          {/* Vises bare når "Event" er krysset av */}
-          {isEvent && (
-            <div className="mt-2 flex flex-col gap-2 text-sm">
-              <label>
-                Dato og tid{" "}
-                <input type="datetime-local" value={startsAt} onChange={(e) => setStartsAt(e.target.value)} disabled={isLoading} />
-              </label>
-              <label>
-                Sted{" "}
-                <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} disabled={isLoading} />
-              </label>
-            </div>
-          )}
-
-
-
         </div>
       </div>
 
-      <div className="mt-3 flex items-center justify-end gap-3 border-t border-line pt-4">
-        {status === "error" ? <p role="alert" className="error-text mr-auto">{error}</p> : null}
-        {status === "success" ? <p className="mr-auto text-sm text-success">Innlegget er publisert</p> : null}
+      {/* Vises bare når "Event" er krysset av */}
+      {isEvent && (
+        <div className="mt-4 p-4 grid animate-pop grid-cols-2 gap-4 rounded-2xl bg-canvas shadow-sm sm:grid-cols-2">
+          <div className="flex flex-col">
+            <label htmlFor="event-date-time" className="label">
+              Dato og tid
+            </label>
+            <input
+              id="event-datetime"
+              type="datetime-local"
+              value={startsAt}
+              onChange={(e) => setStartsAt(e.target.value)}
+              disabled={isLoading}
+              required
+              className="field block"
+            />
+          </div>
 
-        <button type="submit" disabled={isLoading} className="btn-primary px-6 py-2.5">
+          <div className="flex flex-col">
+            <label htmlFor="event-location" className="label">
+              Sted
+            </label>
+            <input
+              id="event-location"
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              disabled={isLoading}
+              className="field block"
+            />
+          </div>
+        </div>
+      )}
+
+      <div className="mt-3 flex items-center justify-end gap-3  pt-4">
+        {status === "error" ? (
+          <p role="alert" className="error-text mr-auto">
+            {error}
+          </p>
+        ) : null}
+        {status === "success" ? (
+          <p className="mr-auto text-sm text-success">
+            Innlegget er publisert!
+          </p>
+        ) : null}
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="btn-primary px-6 py-2.5"
+        >
           {isLoading ? "Lagrer..." : "Publiser innlegg"}
         </button>
       </div>

@@ -69,8 +69,8 @@ export function CreateEvent() {
         title,
         description,
         location,
-        category, //
-        isOutdoor, //
+        category,
+        isOutdoor,
         startsAt: `${date}T${time}`,
       }),
     });

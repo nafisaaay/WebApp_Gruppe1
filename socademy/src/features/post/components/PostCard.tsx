@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef,useState, type MouseEvent } from "react";
+import { useRef, useState, type MouseEvent } from "react";
 import { X } from "lucide-react";
 import { Avatar } from "@/app/components/Avatar";
 import type { PostDTO } from "../post-mapper";
@@ -44,7 +44,9 @@ export function PostCard({ post }: { post: PostDTO }) {
             {post.title}
           </button>
         </h3>
-        <p className="mt-2 line-clamp-3 leading-relaxed whitespace-pre-line">{post.text}</p>
+        <p className="mt-2 line-clamp-3 leading-relaxed whitespace-pre-line">
+          {post.text}
+        </p>
       </article>
 
       {/* Pop-upen med hele innlegget */}
@@ -56,7 +58,12 @@ export function PostCard({ post }: { post: PostDTO }) {
         className="m-auto w-[calc(100%-2rem)] max-w-2xl rounded-3xl bg-surface p-0 text-ink shadow-2xl backdrop:bg-ink/40 backdrop:backdrop-blur-sm open:animate-pop"
       >
         <div className="relative max-h-[85dvh] overflow-y-auto p-6 sm:p-8">
-          <button type="button" onClick={close} aria-label="Lukk innlegg" className="icon-btn absolute top-4 right-4">
+          <button
+            type="button"
+            onClick={close}
+            aria-label="Lukk innlegg"
+            className="icon-btn absolute top-4 right-4"
+          >
             <X className="size-5" aria-hidden />
           </button>
 
@@ -64,21 +71,34 @@ export function PostCard({ post }: { post: PostDTO }) {
             <Avatar name={post.userName} size="lg" />
             <p className="text-lg font-semibold">{post.userName}</p>
           </header>
-                      {isEditing ? (
+          {isEditing ? (
             <div className="mt-6">
               <EditPostForm post={post} onCancel={() => setIsEditing(false)} />
             </div>
-           ):(
+          ) : (
             <>
-              <h2 id={titleId} className="mt-6 text-2xl font-bold tracking-tight">{post.title}</h2>
-              <p className="mt-3 text-[17px] leading-relaxed whitespace-pre-line">{post.text}</p>
+              <h2
+                id={titleId}
+                className="mt-6 text-2xl font-bold tracking-tight"
+              >
+                {post.title}
+              </h2>
+              <p className="mt-3 text-[17px] leading-relaxed whitespace-pre-line">
+                {post.text}
+              </p>
               <div className="mt-4">
                 <LikeButton post={post} />
-                </div>
+              </div>
 
               {isOwner ? (
                 <div className="mt-6 flex gap-3 border-t border-line pt-4">
-                  <button type="button" onClick={() => setIsEditing(true)}>Rediger</button>
+                  <button
+                    type="button"
+                    onClick={() => setIsEditing(true)}
+                    className="btn-pill hover:border-primary hover:bg-primary hover:text-white"
+                  >
+                    Rediger
+                  </button>
                   <DeletePostButton post={post} />
                 </div>
               ) : null}
