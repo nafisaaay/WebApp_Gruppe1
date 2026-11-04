@@ -4,7 +4,6 @@ import { createPost } from "../post-api";
 import { Avatar } from "@/app/components/Avatar";
 import { useUser } from "@/features/user/components/UserProvider";
 import type { CreatePostInput } from "../utils/post-schema";
-import {createEvent} from "@/features/event/event-api";
 import { CATEGORIES } from "@/app/pages/CreateEvent";
 
 const initialData: CreatePostInput = {
