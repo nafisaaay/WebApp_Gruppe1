@@ -29,7 +29,7 @@ Når du trykker på `Registrer` blir du sendt til hovedsiden vår. Dette er en k
 
 Trykk på `+ Nytt event` for å legge inn ditt første arrangement! 
 <img width="1512" height="827" alt="modal for å opprette et arrangement" src="https://github.com/user-attachments/assets/de530177-7f45-430c-bd48-42931da1f5dd" />
-Når du har lagret arrangementet ditt, blir den markert med en prikk på den dagen du holder arrangement. 
+Når du har lagret arrangementet ditt, blir det markert med en prikk i kalenderen på den dagen du holder arrangementet. 
 <img width="1512" height="826" alt="hjem-/kalenderside hvor det opprettede arrangementet er markert" src="https://github.com/user-attachments/assets/20a45b46-9474-41bd-b997-fe5deee0fa79" />
 Trykker du på denne dagen, får du opp alle arrangementene som skjer på den dagen. 
 <img width="1512" height="825" alt="hjem-/kalenderside med visning av alle arrangementene som skjer 11/11/2026" src="https://github.com/user-attachments/assets/5eda116f-be6a-4c66-a49b-299633a28406" />
