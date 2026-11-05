@@ -1,5 +1,12 @@
-# Velkommen til Socademy!
-En webapplikasjon for studenter, hvor man kan opprette innlegg og arrangementer! 
+<div align="center">
+
+# Velkommen til SocAdemy!
+
+</div>
+
+SocAdemy er en sosial app for studenter på Høgskolen i Østfold. Her kan du dele innlegg i forumet, se hva som skjer på campus i kalenderen, og holde kontakt med medstudenter.
+
+Appen finnes både som **mobilapp** og **webapp**. Mobilappen har ingen egen database. Den bruker **samme API og samme database som webappen**, så et innlegg eller et event du lager på telefonen, dukker opp på nettsiden også. Mobil appen ligger i et eget repo: [nafisaaay/MobilProg_Gruppe1](https://github.com/nafisaaay/MobilProg_Gruppe1). 
 
 ## For å starte prosjektet:
 1. Start med å skrive `cd socademy` i terminalen for å komme til riktig mappe
